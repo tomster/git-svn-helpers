@@ -46,7 +46,8 @@ def main(args=None):
     if local_branch in existing_branches:
         popen('git co -f %s' % local_branch, False, False)
     else:
-        popen('git co -f -b %s %s' % (local_branch, remote_branch), False, False)
+        popen('git co -f -b %s %s' % (local_branch, remote_branch), False,
+            False)
 
     os.chdir(cwd)
     if not exists('.git'):
