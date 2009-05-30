@@ -1,14 +1,13 @@
 import sys
 import os
-from os.path import exists, isdir, islink, expanduser
+from os.path import exists, isdir, islink
 from jarn.mkrelease.tee import popen
 from elementtree import ElementTree
 
-GIT_CACHE = expanduser('~/.gitcache/')
+from config import GIT_CACHE
 
 
 def main(args=None):
-
     if exists('.git') and not islink('.git'):
         print "This seems to be a local git repository!"
         sys.exit(1)
