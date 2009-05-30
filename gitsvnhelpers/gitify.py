@@ -7,8 +7,9 @@ from config import GIT_CACHE
 from utils import basename
 from utils import is_git
 from utils import is_svn
-from utils import svn_url
+from utils import svn_type
 from utils import svn_branch
+from clone import clone
 
 
 def main(args=None):
@@ -23,15 +24,24 @@ def main(args=None):
 
     package_name = basename()
 
-    if not exists(GIT_CACHE + package_name):
-        print "No git repository found in %s." % GIT_CACHE
-        sys.exit(1)
-
-    # get the branch svn is on
-    if '/tags/' in svn_url():
+    if svn_type() == 'tags':
         print "Can't work on tags!"
         sys.exit(1)
+    elif svn_type() == 'unrecognized':
+        print "Unrecognized svn structure!"
+        sys.exit(1)
 
+    if not exists(GIT_CACHE + package_name):
+        print "No git repository found in %s." % GIT_CACHE
+        print "Initiating cloning into cache."
+        clone()
+        fresh = True
+    else:
+        print "Updating local checkout"
+        popen('svn up')
+        fresh = False
+
+    # get the branch svn is on
     remote_branch = svn_branch()
     # the following is just convention:
     local_branch = "local/%s" % remote_branch
@@ -39,7 +49,9 @@ def main(args=None):
     cwd = os.getcwd()
     # perform all index updates in the cache to avoid conflicts
     os.chdir(GIT_CACHE + package_name)
-    popen('git fetch', False, False)
+    if not fresh:
+        print "Fetching"
+        popen('git fetch', False, False)
 
     dummy, existing_branches = popen('git b', False, False)
     existing_branches = [b.strip() for b in existing_branches]
@@ -53,7 +65,9 @@ def main(args=None):
     if not exists('.git'):
         popen('ln -s %s%s/.git' % (GIT_CACHE, package_name), False, False)
 
-    popen('git svn rebase', False, False)
+    if not fresh:
+        print "Rebasing"
+        popen('git svn rebase', False, False)
     print "Git branch '%s' is now following svn branch '%s':" % (
         local_branch, remote_branch)
     popen('svn st')
