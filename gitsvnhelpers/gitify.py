@@ -38,8 +38,6 @@ def main(args=None):
         clone()
         fresh = True
     else:
-        print "Updating local checkout"
-        popen('svn up')
         fresh = False
 
     # get the branch svn is on
