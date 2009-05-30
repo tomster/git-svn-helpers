@@ -24,10 +24,11 @@ def main(args=None):
 
     package_name = basename()
 
-    if svn_type() == 'tags':
+    svntype = svn_type() 
+    if svntype == 'tags':
         print "Can't work on tags!"
         sys.exit(1)
-    elif svn_type() == 'unrecognized':
+    elif svntype == 'unrecognized':
         print "Unrecognized svn structure!"
         sys.exit(1)
 
