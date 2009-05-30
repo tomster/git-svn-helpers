@@ -1,5 +1,3 @@
-#!/Users/tomster/Development/tools/bin/python
-
 import sys
 import os
 from os.path import exists, isdir, islink, expanduser
