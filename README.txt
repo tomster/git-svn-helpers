@@ -124,4 +124,8 @@ check-outs!**
 TODO
 ====
 
-'Recycling' git repositories with symlinks is sub-optimal. Ideally we would want to create local clones (IOW replace the symlink command with a ``git clone`` command). *However*, ``git clone`` currently doesn't preserve the svn information of the source. That means we couldn't dcommit from our cloned repository! Eventually, this should be fixed up-stream in git svn.
+'Recycling' git repositories with symlinks is sub-optimal. Ideally we would
+want to create local clones (IOW replace the symlink command with a ``git
+clone`` command). *However*, ``git clone`` currently doesn't preserve the svn
+information of the source. That means we couldn't dcommit from our cloned
+repository! Eventually, this should be fixed up-stream in git svn.
