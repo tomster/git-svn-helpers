@@ -6,8 +6,7 @@ from config import GIT_CACHE
 from utils import basename
 from utils import is_svn
 from utils import svn_log
-from utils import svn_url
-from utils import svn_type
+from utils import base_url
 
 
 def clone():
@@ -38,12 +37,10 @@ def clone():
     logentries = svn_log().getiterator('logentry')
     last_revision = logentries[0].attrib['revision']
     first_revision = logentries[-1].attrib['revision']
-    svntype = svn_type()
-    svnurl = svn_url()
-    base_url = svnurl.split(svntype)[0]
+    baseurl = base_url()
 
     print "Cloning %s from r%s:%s into %s" % (
-        base_url, first_revision, last_revision, GIT_CACHE
+        baseurl, first_revision, last_revision, GIT_CACHE
     )
     
     cwd = os.getcwd()
@@ -51,7 +48,7 @@ def clone():
         os.mkdir(GIT_CACHE)
     os.chdir(GIT_CACHE)
     popen("git svn clone -r%s:%s %s -s" % (first_revision,
-        last_revision, base_url))
+        last_revision, baseurl))
 
     os.chdir(cwd)
     return 0

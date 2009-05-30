@@ -27,7 +27,7 @@ Here's a sample session::
     No git repository found in /Users/tomster/.gitcache/.
     Initiating cloning into cache.
     Analyzing svn log...
-    Cloning https://svn.plone.org/svn/plone/plone.app.form/ from r23249:25999 into /Users/tomster/.gitcache/
+    Cloning https://svn.plone.org/svn/plone/plone.app.form/ from r10593:27155 into /Users/tomster/.gitcache/
     Initialized empty Git repository in /Users/tomster/.gitcache/plone.app.form/.git/
     ...
     Git branch 'local/1.1' is now following svn branch '1.1':
