@@ -48,9 +48,6 @@ def main(args=None):
     cwd = os.getcwd()
     # perform all index updates in the cache to avoid conflicts
     os.chdir(GIT_CACHE + package_name)
-    if not fresh:
-        print "Fetching"
-        popen('git fetch', False, False)
 
     dummy, existing_branches = popen('git b', False, False)
     existing_branches = [b.strip() for b in existing_branches]
@@ -64,9 +61,6 @@ def main(args=None):
     if not exists('.git'):
         popen('ln -s %s%s/.git' % (GIT_CACHE, package_name), False, False)
 
-    if not fresh:
-        print "Rebasing"
-        popen('git svn rebase', False, False)
     print "Git branch '%s' is now following svn branch '%s':" % (
         local_branch, remote_branch)
     popen('svn st')
