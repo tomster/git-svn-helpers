@@ -32,8 +32,6 @@ def clone():
             package_name)
         sys.exit(1)
     print "Analyzing svn log..."
-    # TODO: we need to get the log from the package root, not from the
-    # current branch!
     logentries = svn_log().getiterator('logentry')
     last_revision = logentries[0].attrib['revision']
     first_revision = logentries[-1].attrib['revision']
