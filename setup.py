@@ -28,5 +28,7 @@ setup(name='git-svn-helpers',
       ],
       entry_points="""
       # -*- Entry points: -*-
+        [console_scripts]
+        gitify=gitsvnhelpers.gitify:main
       """,
       )
