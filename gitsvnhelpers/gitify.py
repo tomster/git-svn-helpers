@@ -36,9 +36,6 @@ def main(args=None):
         print "No git repository found in %s." % GIT_CACHE
         print "Initiating cloning into cache."
         clone()
-        fresh = True
-    else:
-        fresh = False
 
     # get the branch svn is on
     remote_branch = svn_branch()
