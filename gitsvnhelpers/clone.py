@@ -40,9 +40,8 @@ def clone():
     baseurl = base_url()
 
     print "Cloning %s from r%s:%s into %s" % (
-        baseurl, first_revision, last_revision, GIT_CACHE
-    )
-    
+        baseurl, first_revision, last_revision, GIT_CACHE)
+
     cwd = os.getcwd()
     if not exists(GIT_CACHE):
         os.mkdir(GIT_CACHE)
