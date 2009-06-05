@@ -67,7 +67,7 @@ def fetch():
     usage = "%prog [options] package ..."
     parser = OptionParser(usage)
     parser.add_option('-v', '--verbose', default=0, action='count',
-                      help="print status messages, or debug with -vv")
+        help="print git-svn output")
 
     options, args = parser.parse_args()
 
