@@ -1,0 +1,19 @@
+0.2b - 2009-06-05
+-----------------
+
+* Added the ``gs-fetch`` command which helps keeping the cache up-to-date
+
+
+0.1b2 - 2009-05-30
+------------------
+
+* BUGFIX: get the svn log from the package root (i.e. ``/path/to/foo``) 
+  instead of the locally checked out path (i.e. ``path/to/foo/branches/bar``)
+  which is usually much younger than the entire package and thus we would miss
+  revisions in the cloning process!
+
+
+0.1b1 - 2009-05-30
+------------------
+
+* Initial release a.k.a. "Works for me™"

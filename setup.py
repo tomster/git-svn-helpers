@@ -5,7 +5,16 @@ version = '0.1b3'
 setup(name='git-svn-helpers',
     version=version,
     description="Command-line tools to make git-svn simple",
-    long_description=open("README.txt").read(),
+    long_description = (
+        open('README.txt').read()
+        + '\n' +
+        'Change history\n'
+        '**************\n'
+        + '\n' +
+        open('HISTORY.txt').read()
+        + '\n' +
+        'Download\n'
+        '********\n'),
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         'Development Status :: 4 - Beta',
