@@ -23,8 +23,8 @@ def main(args=None):
         sys.exit(1)
 
     package_name = basename()
-
     svntype = svn_type()
+
     if svntype == 'tags':
         print "Can't work on tags!"
         sys.exit(1)

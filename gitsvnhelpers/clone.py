@@ -31,6 +31,7 @@ def clone():
         print "git repository already found in %s%s." % (GIT_CACHE,
             package_name)
         sys.exit(1)
+
     print "Analyzing svn log..."
     logentries = svn_log().getiterator('logentry')
     last_revision = logentries[0].attrib['revision']
