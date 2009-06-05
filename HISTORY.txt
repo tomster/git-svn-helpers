@@ -1,3 +1,8 @@
+0.3b - Unreleased
+-----------------
+
+
+
 0.2b - 2009-06-05
 -----------------
 
@@ -16,4 +21,4 @@
 0.1b1 - 2009-05-30
 ------------------
 
-* Initial release a.k.a. "Works for me™"
+* Initial release a.k.a. "Works for me"

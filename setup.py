@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-version = '0.2b'
+version = '0.3b'
 
 setup(name='git-svn-helpers',
     version=version,
