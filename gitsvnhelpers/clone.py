@@ -1,6 +1,9 @@
 import sys
 import os
 from os.path import exists
+from optparse import OptionParser
+from os.path import abspath
+from glob import glob
 from jarn.mkrelease.tee import popen
 from config import GIT_CACHE
 from utils import basename
@@ -51,6 +54,42 @@ def clone():
     os.chdir(cwd)
     return 0
 
+
+def fetch():
+
+    """
+    Performs a git-svn fetch operation for the given packages inside the
+    cache directory. If no parameter is passed, all cached packages are
+    updated.
+    """
+
+    global options, args
+    usage = "%prog [options] package ..."
+    parser = OptionParser(usage)
+    parser.add_option('-v', '--verbose', default=0, action='count',
+                      help="print status messages, or debug with -vv")
+
+    options, args = parser.parse_args()
+
+    try:
+        input = args[0]
+    except IndexError:
+        input = '*'
+
+    cwd = os.getcwd()
+    updated = 0
+    for package in glob(abspath("%s/%s" % (GIT_CACHE, input))):
+        os.chdir(package)
+        print "fetching %s" % package
+        popen("git svn fetch", options.verbose, True)
+        updated += 1
+
+    if updated > 0:
+        print "Done. %d packages updated." % updated
+    else:
+        print "No packages found for %s" % input
+    os.chdir(cwd)
+    return 0
 
 if __name__ == '__main__':
     sys.exit(clone())

@@ -1,4 +1,4 @@
-git-svn-helpers is a collection of command line tools that greatly simplifies
+git-svn-helpers is a collection of command line tools that greatly simplify
 using git for svn repositories.
 
 Its main goal is to make setting up a local git repository following an
@@ -75,7 +75,7 @@ Notice, that this operation went much faster, as we now have used the existing g
       master
 
 Caveats
-*******
+=======
 
 'Recycling' ``.git`` in this manner works (perhaps surprisingly) well in practice, but you need to keep the following in mind:
 
@@ -120,6 +120,24 @@ Simple: just re-run gitify::
 Basically, that's all you need to remember when working with multiple
 check-outs of the same package: **Always run gitify when switching between
 check-outs!**
+
+Keeping the cache up-to-date
+============================
+
+Of course, once you introduce a cache you need to keep it up-to-date. ``git-svn``
+provides the ``fetch`` command for this purpose. In practice it is cumbersome
+to update each package manually, though. Therefore we provide the ``gs-fetch``
+command which can update multiple packages at once using wildcards, like so::
+
+    > gs-fetch plone*
+    fetching /Users/tomster/.gitcache/plone.app.form
+    fetching /Users/tomster/.gitcache/plone.pony
+    fetching /Users/tomster/.gitcache/plonenext
+    Done. 3 packages updated.
+
+You can pass the ``-v`` option to see the output of the ``git-svn fetch`` commands.
+If you don't provide a package *all* packages will be updated. This is useful
+for automated updates, i.e. from crontab.
 
 TODO
 ====
