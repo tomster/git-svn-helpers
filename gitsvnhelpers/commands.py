@@ -91,5 +91,14 @@ def fetch():
     os.chdir(cwd)
     return 0
 
+
+def commit():
+    """ performs a dcommit with an ensuing svn update, to keep git and svn
+        in sync.
+    """
+    status, dummy = popen('git svn dcommit', True, True)
+    if status == 0:
+        popen('svn up --force', True, True)
+
 if __name__ == '__main__':
     sys.exit(clone())

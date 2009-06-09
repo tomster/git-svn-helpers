@@ -1,7 +1,8 @@
-0.3b - Unreleased
------------------
+0.3 - 2009-06-09
+----------------
 
-
+* Added the ``gs-commit`` command which helps committing back to svn and
+  keeping git and svn in sync
 
 0.2b - 2009-06-05
 -----------------

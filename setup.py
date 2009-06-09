@@ -42,5 +42,6 @@ setup(name='git-svn-helpers',
         gitify=gitsvnhelpers.gitify:main
         gs-clone=gitsvnhelpers.commands:clone
         gs-fetch=gitsvnhelpers.commands:fetch
+        gs-commit=gitsvnhelpers.commands:commit
     """,
     )

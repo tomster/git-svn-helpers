@@ -139,6 +139,25 @@ You can pass the ``-v`` option to see the output of the ``git-svn fetch`` comman
 If you don't provide a package *all* packages will be updated. This is useful
 for automated updates, i.e. from crontab.
 
+Keeping git and svn in sync
+===========================
+
+Since the local filesystem is both a git repository, as well as a svn check-
+out *at the same time* (IOW we have both ``.git`` and ``.svn`` floating
+around) they should be kept in sync as closely as possible. By design, this
+can only happen, when we have online access to the svn repository. Therefore
+it is best performed when committing back to svn. The way this is achieved
+manually is to first dcommit and then perform a ``svn up --force`` command. 
+The ``--force`` is necessary so that svn won't be bothered by any new files
+that have been committed::
+
+    > gs-commit
+    Committing to https://svn.plone.org/svn/plone/plone.app.form/branches/1.1 ...
+    At revision 27229.
+    > svn st
+    <BLANKLINE>
+
+
 TODO
 ====
 
