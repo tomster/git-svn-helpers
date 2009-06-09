@@ -40,7 +40,7 @@ setup(name='git-svn-helpers',
         # -*- Entry points: -*-
         [console_scripts]
         gitify=gitsvnhelpers.gitify:main
-        gs-clone=gitsvnhelpers.clone:clone
-        gs-fetch=gitsvnhelpers.clone:fetch
+        gs-clone=gitsvnhelpers.commands:clone
+        gs-fetch=gitsvnhelpers.commands:fetch
     """,
     )

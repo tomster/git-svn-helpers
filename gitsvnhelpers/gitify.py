@@ -9,7 +9,7 @@ from utils import is_git
 from utils import is_svn
 from utils import svn_type
 from utils import svn_branch
-from clone import clone
+from commands import clone
 
 
 def main(args=None):
