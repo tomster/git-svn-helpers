@@ -40,7 +40,10 @@ def main(args=None):
     # get the branch svn is on
     remote_branch = svn_branch()
     # the following is just convention:
-    local_branch = "local/%s" % remote_branch
+    if svntype == 'trunk':
+        local_branch = "master"
+    else:
+        local_branch = "local/%s" % remote_branch
 
     cwd = os.getcwd()
     # perform all index updates in the cache to avoid conflicts
