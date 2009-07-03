@@ -35,6 +35,7 @@ setup(name='git-svn-helpers',
     install_requires=[
         # -*- Extra requirements: -*-
         "jarn.mkrelease",
+        "elementtree",
     ],
     entry_points="""
         # -*- Entry points: -*-
