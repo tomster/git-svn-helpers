@@ -49,9 +49,9 @@ def main(args=None):
     dummy, existing_branches = popen('git b', False, False)
     existing_branches = [b.strip() for b in existing_branches]
     if local_branch in existing_branches:
-        popen('git co -f %s' % local_branch, False, False)
+        popen('git checkout -f %s' % local_branch, False, False)
     else:
-        popen('git co -f -b %s %s' % (local_branch, remote_branch), False,
+        popen('git checkout -f -b %s %s' % (local_branch, remote_branch), False,
             False)
 
     os.chdir(cwd)
@@ -60,8 +60,8 @@ def main(args=None):
 
     print "Git branch '%s' is now following svn branch '%s':" % (
         local_branch, remote_branch)
-    popen('svn st')
-    popen('git st')
+    popen('svn status')
+    popen('git status')
 
     return 0
 
