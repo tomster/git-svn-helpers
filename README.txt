@@ -157,6 +157,20 @@ that have been committed::
     > svn st
     <BLANKLINE>
 
+Installation
+============
+
+Simply use `easy_install <http://peak.telecommunity.com/DevCenter/EasyInstall>`_,
+optionally with `virtualenv <http://pypi.python.org/pypi/virtualenv>`_::
+
+    > easy_install git-svn-helpers
+
+Requirements
+------------
+
+``git-svn-helpers`` requires that git (with subversion support a.k.a 
+``git-svn``) is already installed.
+
 
 TODO
 ====
