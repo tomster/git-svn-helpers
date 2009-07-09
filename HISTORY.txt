@@ -1,6 +1,10 @@
-0.4 - Unreleased
-----------------
+0.3.1 - 2009-07-09
+------------------
 
+* BUGFIX: Don't use custom aliases, as they might not be installed. 
+  This resolves http://github.com/tomster/git-svn-helpers/issues#issue/2
+* BUGFIX: Explicitly list elementtree as dependency
+  This resolves http://github.com/tomster/git-svn-helpers/issues#issue/1)
 
 0.3 - 2009-06-09
 ----------------
