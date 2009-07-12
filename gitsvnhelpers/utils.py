@@ -1,6 +1,6 @@
 from os.path import exists, isdir, islink
 from elementtree import ElementTree
-from jarn.mkrelease.tee import popen
+from tee import popen
 
 
 def basename():

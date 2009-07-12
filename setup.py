@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-version = '0.3.2'
+version = '0.4b1'
 
 setup(name='git-svn-helpers',
     version=version,
@@ -34,15 +34,11 @@ setup(name='git-svn-helpers',
     zip_safe=False,
     install_requires=[
         # -*- Extra requirements: -*-
-        "jarn.mkrelease",
         "elementtree",
     ],
     entry_points="""
         # -*- Entry points: -*-
         [console_scripts]
-        gitify=gitsvnhelpers.gitify:main
-        gs-clone=gitsvnhelpers.commands:clone
-        gs-fetch=gitsvnhelpers.commands:fetch
-        gs-commit=gitsvnhelpers.commands:commit
+        gitify=gitsvnhelpers.gitify:gitify
     """,
     )
