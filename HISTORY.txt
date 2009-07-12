@@ -1,13 +1,16 @@
 0.4 - Unreleased
 ----------------
 
-* Refactored the entry points to just gitify. All other commands are now
-  sub-commands of ``gitify``.
+* Refactored the entry points to just use gitify. All other commands are now
+  sub-commands of ``gitify``:
 
-* Added usage and help output for each command
+  * ``gs-commit`` has been replaced with ``gitify push``
+  * ``gs-fetch`` has been replaced with ``gitify fetch``
 
-* Removed the clone command as it was only ever used together with the
-  main gitify command anyway
+* Added usage and help output for each command.
+
+* Removed the ``gs-clone`` entry point as it was only ever used together with
+  the main gitify command anyway.
 
 * Use proper logging instead of just printing to stdout
 
@@ -15,7 +18,7 @@
   function (``popen``) anyway, and due to mkrelease's recent git and hg
   support its dependencies have grown so large as to no longer justify them
   for gitify. ``popen`` now lives in ``tee.py`` as an abridged copy from
-  jarn.mkrelease
+  jarn.mkrelease.
 
 0.3.1 - 2009-07-09
 ------------------
