@@ -11,7 +11,7 @@ from utils import is_git
 from utils import is_svn
 from utils import svn_type
 from utils import svn_branch
-from commands import clone
+from utils import clone
 from commands import Command
 from commands import CmdPush
 from commands import CmdFetch
@@ -78,18 +78,22 @@ class CmdGitify(Command):
 
 
 class CmdHelp(Command):
+
     def __init__(self, gitify):
         Command.__init__(self, gitify)
         self.parser = optparse.OptionParser(
             usage="%prog help [<command>]",
-            description="Show help on the given command or about the whole script if none given.",
+            description="Show help on the given command or about the whole "
+                "script if none given.",
             add_help_option=False)
 
     def __call__(self):
         gitify = self.gitify
         if len(sys.argv) != 3 or sys.argv[2] not in gitify.commands:
-            print("usage: %s <command> [options] [args]" % os.path.basename(sys.argv[0]))
-            print("\nType '%s help <command>' for help on a specific command." % os.path.basename(sys.argv[0]))
+            print("usage: %s <command> [options] [args]"
+                % os.path.basename(sys.argv[0]))
+            print("\nType '%s help <command>' for help on a specific command."
+                % os.path.basename(sys.argv[0]))
             print("\nAvailable commands:")
             f_to_name = {}
             for name, f in gitify.commands.iteritems():
@@ -106,7 +110,6 @@ class CmdHelp(Command):
                     print("    %s" % name)
         else:
             print gitify.commands[sys.argv[2]].parser.format_help()
-
 
 
 class Gitify(object):
@@ -139,7 +142,7 @@ class Gitify(object):
             push = self.cmd_push,
             gitify = self.cmd_gitify,
         )
-        
+
         try:
             command = sys.argv[1]
         except IndexError:
