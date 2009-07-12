@@ -126,10 +126,10 @@ Keeping the cache up-to-date
 
 Of course, once you introduce a cache you need to keep it up-to-date. ``git-svn``
 provides the ``fetch`` command for this purpose. In practice it is cumbersome
-to update each package manually, though. Therefore we provide the ``gs-fetch``
+to update each package manually, though. Therefore we provide the ``fetch``
 command which can update multiple packages at once using wildcards, like so::
 
-    > gs-fetch plone*
+    > gitify fetch plone*
     fetching /Users/tomster/.gitcache/plone.app.form
     fetching /Users/tomster/.gitcache/plone.pony
     fetching /Users/tomster/.gitcache/plonenext
@@ -147,13 +147,15 @@ out *at the same time* (IOW we have both ``.git`` and ``.svn`` floating
 around) they should be kept in sync as closely as possible. By design, this
 can only happen, when we have online access to the svn repository. Therefore
 it is best performed when committing back to svn. The way this is achieved
-manually is to first dcommit and then perform a ``svn up --force`` command. 
-The ``--force`` is necessary so that svn won't be bothered by any new files
-that have been committed::
+manually is to first dcommit and then perform a ``svn up --force`` command
+(the ``--force`` is necessary so that svn won't be bothered by any new files
+that have been committed). ``gitify push`` provides a convenience command that
+performs this for you::
 
-    > gs-commit
+    > gitify push -v
     Committing to https://svn.plone.org/svn/plone/plone.app.form/branches/1.1 ...
     At revision 27229.
+    INFO: Pushed local changes to svn.
     > svn st
     <BLANKLINE>
 
