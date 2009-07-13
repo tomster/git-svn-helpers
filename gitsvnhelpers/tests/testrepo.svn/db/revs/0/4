@@ -1,0 +1,50 @@
+id: 2-1.0-4.r4/0
+type: dir
+pred: 2-1.0.r3/379
+count: 3
+text: 3 290 76 76 b8a88a153507ce05acbcb35835304d8d
+cpath: /branches/feature-bar
+copyfrom: 3 /trunk
+
+PLAIN
+K 11
+feature-bar
+V 16
+dir 2-1.0-4.r4/0
+END
+ENDREP
+id: 0-1.0.r4/211
+type: dir
+pred: 0-1.0.r1/63
+count: 1
+text: 4 155 43 43 42afb0ce55fca5e12ee82001043d4225
+cpath: /branches
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 16
+dir 0-1.0.r4/211
+K 4
+tags
+V 16
+dir 1-1.0.r1/130
+K 5
+trunk
+V 16
+dir 2-1.0.r3/379
+END
+ENDREP
+id: 0.0.r4/463
+type: dir
+pred: 0.0.r3/628
+count: 4
+text: 4 348 102 102 dc1b366ffce335f53a99a7c523abecd1
+cpath: /
+copyroot: 0 /
+
+2-1._0.t3-3 add false false /branches/feature-bar
+3 /trunk
+
+463 591
