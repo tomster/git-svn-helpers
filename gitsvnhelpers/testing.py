@@ -7,7 +7,6 @@ import StringIO
 
 from os.path import realpath, join, dirname, isdir
 
-from jarn.mkrelease.process import Process
 from jarn.mkrelease.dirstack import DirStack, chdir
 
 
@@ -204,42 +203,6 @@ class GitSetup(PackageAPI):
     def tag(self, dir, tagid):
         process = Process(quiet=True)
         process.system('git tag %s' % tagid)
-
-
-class MockProcessError(Exception):
-    """Raised by MockProcess."""
-
-
-class MockProcess(Process):
-    """A Process we can tell what to return by
-
-    - passing rc and lines, or
-    - passing a function that returns rc and lines depending on cmd.
-    """
-
-    def __init__(self, rc=None, lines=None, func=None):
-        Process.__init__(self, quiet=True)
-        self.rc = rc or 0
-        self.lines = lines or []
-        self.func = func
-
-    def popen(self, cmd, echo=True, echo2=True):
-        if self.func is not None:
-            rc_lines = self.func(cmd)
-            if rc_lines is not None:
-                return rc_lines
-            else:
-                raise MockProcessError('Unhandled command: %s' % cmd)
-        return self.rc, self.lines
-
-    def os_system(self, cmd):
-        if self.func is not None:
-            rc_lines = self.func(cmd)
-            if rc_lines is not None:
-                return rc_lines[0]
-            else:
-                raise MockProcessError('Unhandled command: %s' % cmd)
-        return self.rc
 
 
 def quiet(func):

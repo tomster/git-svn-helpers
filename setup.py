@@ -33,6 +33,7 @@ setup(name='git-svn-helpers',
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     zip_safe=False,
+    test_suite='gitsvnhelpers.tests',
     install_requires=[
         # -*- Extra requirements: -*-
         "elementtree",
