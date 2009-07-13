@@ -66,15 +66,12 @@ Performs a dcommit with an ensuing svn update, to keep git and svn
 in sync.
             """,
             add_help_option=False)
-        self.parser.add_option("-v", "--verbose", dest="verbose",
-            action="store_true", default=False,
-            help="""Show git-svn output.""")
 
     def __call__(self):
         options, args = self.parser.parse_args(sys.argv[2:])
-        status, dummy = popen('git svn dcommit', options.verbose, True)
+        status, dummy = popen('git svn dcommit', True, True)
         if status == 0:
-            popen('svn up --force', options.verbose, True)
+            popen('svn up --force', True, True)
             logger.info("Pushed local changes to svn.")
         else:
             logger.error("An error occurred, consult output above.")
