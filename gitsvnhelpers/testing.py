@@ -7,7 +7,6 @@ class BaseTestCase(SubversionSetup):
 
     name = 'svn'
     source = 'testrepo.svn'
-    auto_clone = True
 
     def setUp(self):
         JailSetup.setUp(self)
@@ -19,15 +18,8 @@ class BaseTestCase(SubversionSetup):
             self.cleanUp()
             raise
 
-        if self.auto_clone:
-            try:
-                self.clone()
-            except:
-                self.cleanUp()
-                raise
-
-    def clone(self):
+    def clone(self, path='trunk'):
         process = Process(quiet=True)
-        process.system('svn checkout file://%s/trunk %s' % (self.packagedir,
-            self.source))
+        process.system('svn checkout file://%s/%s %s' % (self.packagedir,
+            path, self.source))
         self.clonedir = join(self.tempdir, self.source)
