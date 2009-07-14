@@ -5,7 +5,7 @@ import os
 from os.path import exists
 
 from config import GIT_CACHE
-from tee import popen
+from jarn.mkrelease.tee import popen
 from utils import basename
 from utils import is_git
 from utils import is_svn

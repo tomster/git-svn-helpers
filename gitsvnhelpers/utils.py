@@ -2,7 +2,7 @@ import sys
 import os
 from os.path import exists, isdir, islink
 from elementtree import ElementTree
-from tee import popen
+from jarn.mkrelease.tee import popen
 from config import GIT_CACHE
 
 

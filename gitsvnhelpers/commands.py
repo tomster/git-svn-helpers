@@ -4,7 +4,7 @@ import sys
 import os
 from os.path import abspath
 from glob import glob
-from tee import popen
+from jarn.mkrelease.tee import popen
 from config import GIT_CACHE
 
 logger = logging.getLogger("gitify")
