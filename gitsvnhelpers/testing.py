@@ -18,8 +18,8 @@ class BaseTestCase(SubversionSetup):
             self.cleanUp()
             raise
 
-    def clone(self, path='trunk'):
+    def checkout(self, path='trunk'):
         process = Process(quiet=True)
         process.system('svn checkout file://%s/%s %s' % (self.packagedir,
             path, self.source))
-        self.clonedir = join(self.tempdir, self.source)
+        self.checkoutdir = join(self.tempdir, self.source)
