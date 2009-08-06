@@ -33,7 +33,7 @@ class CmdGitify(Command):
             help="""Show git-svn output.""")
 
     def __call__(self):
-        options, args = self.parser.parse_args(self.args[2:])
+        options, args = self.parser.parse_args(self.gitify.args[2:])
 
         package_name = basename()
         svntype = svn_type()

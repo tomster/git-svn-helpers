@@ -67,7 +67,7 @@ in sync.
             add_help_option=False)
 
     def __call__(self):
-        options, args = self.parser.parse_args(gitify.args[2:])
+        options, args = self.parser.parse_args(self.gitify.args[2:])
         status, dummy = popen('git svn dcommit', True, True)
         if status == 0:
             popen('svn up --force', True, True)
