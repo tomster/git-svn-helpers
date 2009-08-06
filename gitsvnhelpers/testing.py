@@ -1,5 +1,6 @@
 import shutil
 import sys
+import os
 import StringIO
 from os.path import join, dirname
 from jarn.mkrelease.testing import SubversionSetup, JailSetup
@@ -24,7 +25,8 @@ class BaseTestCase(SubversionSetup):
             # file:/// urls used throughout testing match the pacakge name
             # normally, the filesystem name doesn't matter, when it's being
             # served via http
-            self.repo = join(self.tempdir, self.packagename)
+            os.mkdir("%s/repos/" % self.tempdir)
+            self.repo = join(self.tempdir, 'repos', self.packagename)
             shutil.copytree(original_repo, self.repo)
         except:
             self.cleanUp()
