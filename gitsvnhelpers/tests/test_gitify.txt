@@ -1,12 +1,13 @@
+NOTE: to run this test requires both `svn` and `git` to be on `$PATH`.
+
+Basic Argument handling
+=======================
+
+An unknown command raises a SystemExit:
+
 
   >>> import os
   >>> from gitsvnhelpers.gitify import gitify
-
-Argument handling
-=================
-
-An unknown command raises a SystemExit
-
   >>> gitify(args=['xxx', '-v'])
   Traceback (most recent call last):
   ...
@@ -18,11 +19,11 @@ A known command doesn't:
   usage: gitify <command> [options] [args]
   ...
 
-Initial exectuition
-===================
+Initial execution
+=================
 
 Using gitify on a fresh svn checkout which hasn't been cloned before will
-initiate cloning of that repository
+initiate cloning of that repository:
 
   >>> self.checkout('trunk')
   >>> os.chdir(self.checkoutdir)
@@ -33,4 +34,68 @@ initiate cloning of that repository
   Cloning file:///...
   Initialized empty Git repository in ...
   ...
+  Git branch 'local/trunk' is now following svn branch 'trunk':
+  # On branch local/trunk
+  nothing to commit (working directory clean)
 
+Subsequent execution
+====================
+
+Checking out the trunk to another location and then gitifying that will re-use
+the cloned repository:
+
+  >>> trunk_checkout = self.checkoutdir
+  >>> self.checkout('trunk', target="foo")
+  >>> os.chdir(self.checkoutdir)
+  >>> gitify(args=['gitify'])
+  Git branch 'local/trunk' is now following svn branch 'trunk':
+  # On branch local/trunk
+  nothing to commit (working directory clean)
+
+Switching branches between checkouts
+====================================
+
+Gitify refuses to work on tags (because working on tags is evil!):
+
+  >>> self.checkout('tags/0.1', target="atag")
+  >>> os.chdir(self.checkoutdir)
+  >>> gitify(args=['gitify'])
+  Traceback (most recent call last):
+  ...
+  SystemExit: 1
+
+But it will work on branches:
+
+  >>> self.checkout('branches/feature-bar', target="bar")
+  >>> os.chdir(self.checkoutdir)
+  >>> gitify(args=['gitify'])
+  Git branch 'local/feature-bar' is now following svn branch 'feature-bar':
+  # On branch local/feature-bar
+  nothing to commit (working directory clean)
+
+
+  >>> branch_checkout = self.checkoutdir
+
+Having gitified the branch checkout, if we now re-visit the trunk checkout,
+we will find that the git index doesn't match the filesystem anymore:
+
+  >>> os.chdir(trunk_checkout)
+  >>> from jarn.mkrelease.tee import popen
+  >>> dummy = popen('git status')
+  # On branch local/feature-bar
+  # Changed but not updated:
+  #   (use "git add/rm <file>..." to update what will be committed)
+  #   (use "git checkout -- <file>..." to discard changes in working directory)
+  #
+  #	modified:   README.txt
+  #	deleted:    bar.py
+  #	modified:   foo.py
+  #
+  no changes added to commit (use "git add" and/or "git commit -a")
+
+Re-running gitify will take care of this, though:
+
+  >>> gitify(args=['gitify'])
+  Git branch 'local/trunk' is now following svn branch 'trunk':
+  # On branch local/trunk
+  nothing to commit (working directory clean)
