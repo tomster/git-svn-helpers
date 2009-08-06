@@ -33,7 +33,7 @@ class CmdGitify(Command):
             help="""Show git-svn output.""")
 
     def __call__(self):
-        options, args = self.parser.parse_args(sys.argv[2:])
+        options, args = self.parser.parse_args(self.args[2:])
 
         package_name = basename()
         svntype = svn_type()
@@ -89,11 +89,11 @@ class CmdHelp(Command):
 
     def __call__(self):
         gitify = self.gitify
-        if len(sys.argv) != 3 or sys.argv[2] not in gitify.commands:
+        if len(gitify.args) != 3 or gitify.args[2] not in gitify.commands:
             print("usage: %s <command> [options] [args]"
-                % os.path.basename(sys.argv[0]))
+                % os.path.basename(gitify.args[0]))
             print("\nType '%s help <command>' for help on a specific command."
-                % os.path.basename(sys.argv[0]))
+                % os.path.basename(gitify.args[0]))
             print("\nAvailable commands:")
             f_to_name = {}
             for name, f in gitify.commands.iteritems():
@@ -109,7 +109,7 @@ class CmdHelp(Command):
                 else:
                     print("    %s" % name)
         else:
-            print gitify.commands[sys.argv[2]].parser.format_help()
+            print gitify.commands[gitify.args[2]].parser.format_help()
 
 
 class Gitify(object):
@@ -143,17 +143,23 @@ class Gitify(object):
             gitify = self.cmd_gitify,
         )
 
+        # allow sys.argv to be overridden (used for testing)
+        if 'args' in kwargs:
+            self.args = ['gitify'] + kwargs['args']
+        else:
+            self.args = sys.argv
+
         try:
-            command = sys.argv[1]
+            command = self.args[1]
         except IndexError:
             command = 'gitify'
 
         self.commands.get(command, self.unknown)()
 
     def unknown(self):
-        logger.error("Unknown command '%s'." % sys.argv[1])
+        logger.error("Unknown command '%s'." % self.args[1])
         logger.info("Type '%s help' for usage." % \
-            os.path.basename(sys.argv[0]))
+            os.path.basename(self.args[0]))
         sys.exit(1)
 
 

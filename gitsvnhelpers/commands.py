@@ -18,7 +18,7 @@ class Command(object):
 
 class CmdFetch(Command):
 
-    def __init__(self, gitify):
+    def __init__(self, gitify, args=None):
         Command.__init__(self, gitify)
         self.parser = optparse.OptionParser(
             usage = "%prog fetch [<package-wildcard>]",
@@ -33,7 +33,7 @@ updated.
             help="""Show svn output.""")
 
     def __call__(self):
-        options, args = self.parser.parse_args(sys.argv[2:])
+        options, args = self.parser.parse_args(self.gitify.args[2:])
 
         try:
             input = args[0]
@@ -68,7 +68,7 @@ in sync.
             add_help_option=False)
 
     def __call__(self):
-        options, args = self.parser.parse_args(sys.argv[2:])
+        options, args = self.parser.parse_args(gitify.args[2:])
         status, dummy = popen('git svn dcommit', True, True)
         if status == 0:
             popen('svn up --force', True, True)
