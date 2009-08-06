@@ -32,9 +32,12 @@ class BaseTestCase(SubversionSetup):
             self.cleanUp()
             raise
 
-    def checkout(self, path='trunk'):
+    def checkout(self, path='trunk', target=None):
         process = Process(quiet=True)
-        self.checkoutdir = join(self.tempdir, self.packagename)
+        if target is None:
+            self.checkoutdir = join(self.tempdir, self.packagename)
+        else:
+            self.checkoutdir = join(self.tempdir, target, self.packagename)
         process.system('svn checkout file://%s/%s %s' % (self.repo,
             path, self.checkoutdir))
 
