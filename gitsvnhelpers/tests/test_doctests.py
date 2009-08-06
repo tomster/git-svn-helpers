@@ -1,13 +1,12 @@
 import doctest
 from gitsvnhelpers.testing import BaseTestCase
-from gitsvnhelpers.testing import CommandTestCase
 
 optionflags = (doctest.REPORT_ONLY_FIRST_FAILURE |
                doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 
 
-class TestDoctests(CommandTestCase):
+class TestDoctests(BaseTestCase):
 
     def test_doctests(self):
         for testfile in ['test_gitify.txt',]:
