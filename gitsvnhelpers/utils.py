@@ -3,7 +3,7 @@ import os
 from os.path import exists, isdir, islink
 from elementtree import ElementTree
 from jarn.mkrelease.tee import popen
-from config import GIT_CACHE
+import config
 
 
 def basename():
@@ -81,8 +81,8 @@ def clone():
 
     package_name = basename()
 
-    if exists(GIT_CACHE + package_name):
-        print "git repository already found in %s%s." % (GIT_CACHE,
+    if exists(config.GIT_CACHE + package_name):
+        print "git repository already found in %s%s." % (config.GIT_CACHE,
             package_name)
         sys.exit(1)
 
@@ -93,12 +93,12 @@ def clone():
     baseurl = base_url()
 
     print "Cloning %s from r%s:%s into %s" % (
-        baseurl, first_revision, last_revision, GIT_CACHE)
+        baseurl, first_revision, last_revision, config.GIT_CACHE)
 
     cwd = os.getcwd()
-    if not exists(GIT_CACHE):
-        os.mkdir(GIT_CACHE)
-    os.chdir(GIT_CACHE)
+    if not exists(config.GIT_CACHE):
+        os.mkdir(config.GIT_CACHE)
+    os.chdir(config.GIT_CACHE)
     popen("git svn clone -r%s:%s %s -s" % (first_revision,
         last_revision, baseurl))
 

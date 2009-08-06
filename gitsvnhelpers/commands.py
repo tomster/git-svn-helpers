@@ -1,11 +1,10 @@
 import logging
 import optparse
-import sys
 import os
 from os.path import abspath
 from glob import glob
 from jarn.mkrelease.tee import popen
-from config import GIT_CACHE
+import config
 
 logger = logging.getLogger("gitify")
 
@@ -42,7 +41,7 @@ updated.
 
         cwd = os.getcwd()
         updated = 0
-        for package in glob(abspath("%s/%s" % (GIT_CACHE, input))):
+        for package in glob(abspath("%s/%s" % (config.GIT_CACHE, input))):
             os.chdir(package)
             print "fetching %s" % package
             popen("git svn fetch", options.verbose, True)

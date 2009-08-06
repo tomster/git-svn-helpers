@@ -48,10 +48,13 @@ class StdOut(StringIO.StringIO):
 
 
 class CommandTestCase(BaseTestCase):
-    """a test class that captures stdout and stderr"""
+    """ a test class that captures stdout and stderr and points GIT_CACHE
+        to a temporary directory
+    """
 
     def setUp(self):
         BaseTestCase.setUp(self)
+        config.GIT_CACHE = join(self.tempdir, '.gitcache/')
         self.out = StdOut(sys.stdout)
         self.err = StdOut(sys.stdout)
         sys.stdout = self.out

@@ -4,7 +4,7 @@ import sys
 import os
 from os.path import exists
 
-from config import GIT_CACHE
+import config
 from jarn.mkrelease.tee import popen
 from utils import basename
 from utils import is_git
@@ -45,8 +45,8 @@ class CmdGitify(Command):
             print "Unrecognized svn structure!"
             sys.exit(1)
 
-        if not exists(GIT_CACHE + package_name):
-            print "No git repository found in %s." % GIT_CACHE
+        if not exists(config.GIT_CACHE + package_name):
+            print "No git repository found in %s." % config.GIT_CACHE
             print "Initiating cloning into cache."
             clone()
 
@@ -57,7 +57,7 @@ class CmdGitify(Command):
 
         cwd = os.getcwd()
         # perform all index updates in the cache to avoid conflicts
-        os.chdir(GIT_CACHE + package_name)
+        os.chdir(config.GIT_CACHE + package_name)
 
         dummy, existing_branches = popen('git b', False, False)
         existing_branches = [b.strip() for b in existing_branches]
@@ -69,7 +69,7 @@ class CmdGitify(Command):
 
         os.chdir(cwd)
         if not exists('.git'):
-            popen('ln -s %s%s/.git' % (GIT_CACHE, package_name), False, False)
+            popen('ln -s %s%s/.git' % (config.GIT_CACHE, package_name), False, False)
 
         print "Git branch '%s' is now following svn branch '%s':" % (
             local_branch, remote_branch)
