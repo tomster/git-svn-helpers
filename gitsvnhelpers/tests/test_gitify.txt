@@ -1,0 +1,36 @@
+
+  >>> import os
+  >>> from gitsvnhelpers.gitify import gitify
+
+Argument handling
+=================
+
+An unknown command raises a SystemExit
+
+  >>> gitify(args=['xxx', '-v'])
+  Traceback (most recent call last):
+  ...
+  SystemExit: 1
+
+A known command doesn't:
+
+  >>> gitify(args=['help'])
+  usage: gitify <command> [options] [args]
+  ...
+
+Initial exectuition
+===================
+
+Using gitify on a fresh svn checkout which hasn't been cloned before will
+initiate cloning of that repository
+
+  >>> self.checkout('trunk')
+  >>> os.chdir(self.checkoutdir)
+  >>> gitify(args=['gitify'])
+  No git repository found in...
+  Initiating cloning into cache.
+  Analyzing svn log...
+  Cloning file:///...
+  Initialized empty Git repository in ...
+  ...
+

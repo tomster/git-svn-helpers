@@ -6,6 +6,7 @@ from jarn.mkrelease.testing import SubversionSetup, JailSetup
 from jarn.mkrelease.process import Process
 from gitsvnhelpers import config
 
+
 class BaseTestCase(SubversionSetup):
 
     name = 'svn'
@@ -14,6 +15,8 @@ class BaseTestCase(SubversionSetup):
 
     def setUp(self):
         JailSetup.setUp(self)
+        # monkeypatch GIT_CACHE to point to a temporary directory
+        config.GIT_CACHE = join(self.tempdir, '.gitcache/')
         # copy the test repo to temp, we perform all checkouts from there:
         try:
             original_repo = join(dirname(__file__), 'tests', self.source)
@@ -45,7 +48,7 @@ class StdOut(StringIO.StringIO):
 
     def write(self, s):
         # uncomment the following for debugging tests!
-        #self.__stdout.write(s)
+        # self.__stdout.write(s)
         StringIO.StringIO.write(self, s)
 
     def read(self):
@@ -54,13 +57,11 @@ class StdOut(StringIO.StringIO):
 
 
 class CommandTestCase(BaseTestCase):
-    """ a test class that captures stdout and stderr and points GIT_CACHE
-        to a temporary directory
+    """ a test class that captures stdout and stderr
     """
 
     def setUp(self):
         BaseTestCase.setUp(self)
-        config.GIT_CACHE = join(self.tempdir, '.gitcache/')
         self.out = StdOut(sys.stdout)
         self.err = StdOut(sys.stdout)
         sys.stdout = self.out
