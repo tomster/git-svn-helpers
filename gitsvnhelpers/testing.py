@@ -4,28 +4,34 @@ import StringIO
 from os.path import join, dirname
 from jarn.mkrelease.testing import SubversionSetup, JailSetup
 from jarn.mkrelease.process import Process
-
+from gitsvnhelpers import config
 
 class BaseTestCase(SubversionSetup):
 
     name = 'svn'
     source = 'testrepo.svn'
+    packagename = 'testpackage'
 
     def setUp(self):
         JailSetup.setUp(self)
+        # copy the test repo to temp, we perform all checkouts from there:
         try:
-            package = join(dirname(__file__), 'tests', self.source)
-            self.packagedir = join(self.tempdir, 'testpackage')
-            shutil.copytree(package, self.packagedir)
+            original_repo = join(dirname(__file__), 'tests', self.source)
+            # the target folder needs to be the packagename, so that the
+            # file:/// urls used throughout testing match the pacakge name
+            # normally, the filesystem name doesn't matter, when it's being
+            # served via http
+            self.repo = join(self.tempdir, self.packagename)
+            shutil.copytree(original_repo, self.repo)
         except:
             self.cleanUp()
             raise
 
     def checkout(self, path='trunk'):
         process = Process(quiet=True)
-        process.system('svn checkout file://%s/%s %s' % (self.packagedir,
-            path, self.source))
-        self.checkoutdir = join(self.tempdir, self.source)
+        self.checkoutdir = join(self.tempdir, self.packagename)
+        process.system('svn checkout file://%s/%s %s' % (self.repo,
+            path, self.checkoutdir))
 
 
 class StdOut(StringIO.StringIO):
@@ -39,7 +45,7 @@ class StdOut(StringIO.StringIO):
 
     def write(self, s):
         # uncomment the following for debugging tests!
-        # #self.__stdout.write(s)
+        #self.__stdout.write(s)
         StringIO.StringIO.write(self, s)
 
     def read(self):
