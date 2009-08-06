@@ -1,6 +1,7 @@
+import os
+
 from gitsvnhelpers.testing import CommandTestCase
 from gitsvnhelpers.gitify import gitify
-
 
 class TestGitify(CommandTestCase):
 
@@ -10,3 +11,7 @@ class TestGitify(CommandTestCase):
         gitify(args=['help'])
         self.failUnless("usage" in self.out.getvalue())
 
+    def test_gitify_trunk(self):
+        self.checkout('trunk')
+        os.chdir(self.checkoutdir)
+        gitify(args=['gitify'])
