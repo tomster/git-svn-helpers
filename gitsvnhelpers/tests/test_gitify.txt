@@ -73,6 +73,7 @@ But it will work on branches:
   # On branch local/feature-bar
   nothing to commit (working directory clean)
 
+Let's remember where we checked out this branch, so we can revisit it later:
 
   >>> branch_checkout = self.checkoutdir
 
