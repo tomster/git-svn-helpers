@@ -3,7 +3,7 @@ import sys
 import os
 import StringIO
 from os.path import join, dirname
-from jarn.mkrelease.testing import SubversionSetup, JailSetup
+from jarn.mkrelease.testing import SubversionSetup, JailSetup, GitSetup
 from jarn.mkrelease.process import Process
 from gitsvnhelpers import config
 
@@ -75,3 +75,19 @@ class CommandTestCase(BaseTestCase):
     def cleanUp(self):
         sys.stdout = sys.__stdout__
         sys.stderr = sys.__stderr__
+
+
+class GitTestCase(GitSetup):
+    """ a test class that operates on a git repository
+    """
+    source = 'testrepo.git'
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        try:
+            package = join(dirname(__file__), 'tests', self.source)
+            self.packagedir = join(self.tempdir, 'testpackage')
+            shutil.copytree(package, self.packagedir)
+        except:
+            self.cleanUp()
+            raise
