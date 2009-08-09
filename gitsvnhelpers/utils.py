@@ -105,3 +105,8 @@ def clone():
     os.chdir(cwd)
     return 0
 
+def index_is_dirty():
+    """ Returns whether anything has been added to the git index
+    """
+    result, output = popen('git diff --cached', False, False)
+    return len(output) > 0
