@@ -8,12 +8,12 @@ from gitsvnhelpers.testing import GitTestCase
 
 class TestGit(GitTestCase):
 
-    def test_dirty_index(self):
-        os.chdir(self.packagedir)
+    def test_scm_type(self):
         # make sure it's not svn, but indeed a git repository:
         self.failIf(is_svn())
         self.failUnless(is_git())
 
+    def test_dirty_index(self):
         # A fresh repository is never dirty:
         self.failIf(index_is_dirty())
         # Adding a new file on the filesustem...
