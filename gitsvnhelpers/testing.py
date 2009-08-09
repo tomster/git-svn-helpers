@@ -88,6 +88,7 @@ class GitTestCase(GitSetup):
             package = join(dirname(__file__), 'tests', self.source)
             self.packagedir = join(self.tempdir, 'testpackage')
             shutil.copytree(package, self.packagedir)
+            os.chdir(self.packagedir)
         except:
             self.cleanUp()
             raise
