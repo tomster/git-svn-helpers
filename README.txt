@@ -170,15 +170,21 @@ optionally with `virtualenv <http://pypi.python.org/pypi/virtualenv>`_::
 Requirements
 ============
 
-``git-svn-helpers`` requires that git (with subversion support a.k.a 
+``git-svn-helpers`` requires that git (with subversion support a.k.a
 ``git-svn``) is already installed.
 
 
 TODO
 ====
 
-'Recycling' git repositories with symlinks is sub-optimal. Ideally we would
-want to create local clones (IOW replace the symlink command with a ``git
-clone`` command). *However*, ``git clone`` currently doesn't preserve the svn
-information of the source. That means we couldn't dcommit from our cloned
-repository! Eventually, this should be fixed up-stream in git svn.
+ * 'Recycling' git repositories with symlinks is sub-optimal. Ideally we would
+   want to create local clones (IOW replace the symlink command with a ``git
+   clone`` command). *However*, ``git clone`` currently doesn't preserve the svn
+   information of the source. That means we couldn't dcommit from our cloned
+   repository! Eventually, this should be fixed up-stream in git svn.
+
+ * Implement updating the local checkout with remote svn changes (``gitify up``)
+
+ * Don't insist on the directory name of the checkout being identical to the package name
+
+ * add support for custom svn layout
