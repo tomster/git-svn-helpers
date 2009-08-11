@@ -1,4 +1,4 @@
-0.4 - Unreleased
+0.4 - 2009-08-11
 ----------------
 
 * Refactored the entry points to just use gitify. All other commands are now
