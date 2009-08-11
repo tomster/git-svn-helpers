@@ -186,3 +186,57 @@ Not only that, but svn's log now also contains our two commits:
   Updated README
   ------------------------------------------------------------------------
 
+Keeping the cache up-to-date
+============================
+
+gitify also helps you keeping the cache it creates up-to-date with changes
+that are committed to the svn repository we're tracking. To test this, we
+first create a new, independent svn checkout:
+
+  >>> self.checkout('trunk', target='svnonly')
+  >>> os.chdir(self.checkoutdir)
+  >>> do('echo "Change from svn" >> svn.txt')
+  >>> do('svn add svn.txt')
+  A         svn.txt
+
+  >>> do('svn commit -m "Added from svn"')
+  Adding         svn.txt
+  Transmitting file data .
+  Committed revision 9.
+
+Having done that, let's return to our gitified checkout of trunk:
+
+  >>> os.chdir(trunk_checkout)
+
+Initially, git knows nothing about the svn commit:
+
+  >>> do('git log -n 1 --abbrev-commit')
+  commit ...
+  Author: ...
+  Date: ...
+  <BLANKLINE>
+      Added TODO
+  ...
+
+Now let's run gitify's ``fetch`` command:
+
+  >>> gitify(args=['fetch'])
+  fetching .../.gitcache/testpackage
+  Done. 1 packages updated.
+
+NOTE: currently gitify does *not* modify the local checkout upon fetching, so
+in order to merge the change into the local checkout we need to explicitly
+invoke the rebase command:
+
+  >>> do('git svn rebase')
+  First, rewinding head to replay your work on top of it...
+
+and voila!, the svn commit appears in the git log:
+
+  >>> do('git log -n 1 --abbrev-commit')
+  commit ...
+  Author: ...
+  Date: ...
+  <BLANKLINE>
+      Added from svn
+  ...
