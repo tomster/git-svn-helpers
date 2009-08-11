@@ -173,3 +173,16 @@ local changes:
   # On branch local/trunk
   nothing to commit (working directory clean)
 
+Not only that, but svn's log now also contains our two commits:
+
+  >>> do('svn log --limit=2')
+  ------------------------------------------------------------------------
+  r8 | ... | 1 line
+  <BLANKLINE>
+  Added TODO
+  ------------------------------------------------------------------------
+  r7 | ... | 1 line
+  <BLANKLINE>
+  Updated README
+  ------------------------------------------------------------------------
+
