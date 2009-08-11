@@ -1,0 +1,90 @@
+NOTE: to run this test requires both `svn` and `git` to be on `$PATH`.
+
+Updating from svn
+=================
+
+gitify provides the ``update`` command, which in effect behaves like running
+``svn up`` on the local checkout, except that it also updates the git index.
+
+IOW it performs a ``git svn rebase`` operation, except that it performs this
+operation on the cache, instead of in-place, thus eliminating many possiblities
+for conflicts (which the ``git svn rebase`` command is rather prone to)
+
+Setup
+*****
+
+To test this, we create two checkouts of ``trunk``, one of which we gitify
+and the other just as a plain svn checkout which we then update (to simulate
+the use case of others updating the svn repo independently of our own local
+changes.)
+
+  >>> import os
+  >>> from gitsvnhelpers.gitify import gitify
+  >>> self.checkout('trunk')
+  >>> gitified = self.checkoutdir
+  >>> os.chdir(gitified)
+  >>> gitify(args=['gitify'])
+  No git repository found in...
+  Initiating cloning into cache.
+  Analyzing svn log...
+  Cloning file:///...
+  Initialized empty Git repository in ...
+  ...
+  Git branch 'local/trunk' is now following svn branch 'trunk':
+  # On branch local/trunk
+  nothing to commit (working directory clean)
+
+  >>> self.checkout('trunk', target='svnonly')
+  >>> svnonly = self.checkoutdir
+
+Non-conflicting update
+**********************
+
+Starting easy, we simply add a new file to the svn repo:
+
+  >>> os.chdir(svnonly)
+  >>> do('echo "Change from svn" >> svn.txt')
+  >>> do('svn add svn.txt')
+  A         svn.txt
+
+  >>> do('svn commit -m "Added from svn"')
+  Adding         svn.txt
+  Transmitting file data .
+  Committed revision 7.
+
+Then we re-visit our gitified checkout:
+
+  >>> os.chdir(gitified)
+
+Initially, git knows nothing about the svn commit:
+
+  >>> do('git log -n 1 --abbrev-commit')
+  commit ...
+  Author: ...
+  Date: ...
+  <BLANKLINE>
+      First attempt at fooberizing
+  ...
+
+Now let's run gitify's ``update`` command:
+
+  >>> gitify(args=['update'])
+  	A	svn.txt
+  r7 = ... (trunk)
+  First, rewinding head to replay your work on top of it...
+
+and voila!, the svn commit appears in the git log:
+
+  >>> do('git log -n 1 --abbrev-commit')
+  commit ...
+  Author: ...
+  Date: ...
+  <BLANKLINE>
+      Added from svn
+  ...
+
+Not only that, but the file has indeed been added, as well:
+
+  >>> do('less svn.txt')
+  Change from svn
+

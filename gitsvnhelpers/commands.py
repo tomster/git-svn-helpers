@@ -74,3 +74,19 @@ in sync.
             logger.info("Pushed local changes to svn.")
         else:
             logger.error("An error occurred, consult output above.")
+
+class CmdUpdate(Command):
+
+    def __init__(self, gitify, args=None):
+        Command.__init__(self, gitify)
+        self.parser = optparse.OptionParser(
+            usage = "%prog update",
+            description = """
+Performs a git-svn rebase operation for the current svn checkout.
+            """,
+            add_help_option=False)
+
+    def __call__(self):
+        options, args = self.parser.parse_args(self.gitify.args[2:])
+        status, dummy = popen('git svn rebase', True, True)
+

@@ -24,3 +24,6 @@ class TestDoctests(BaseTestCase):
     def test_gitify(self):
         self._test_doctest()
 
+    def test_gitify_up(self):
+        self._test_doctest()
+

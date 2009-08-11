@@ -15,6 +15,7 @@ from utils import clone
 from commands import Command
 from commands import CmdPush
 from commands import CmdFetch
+from commands import CmdUpdate
 
 logger = logging.getLogger("gitify")
 
@@ -131,11 +132,14 @@ class Gitify(object):
 
         self.cmd_push = CmdPush(self)
         self.cmd_fetch = CmdFetch(self)
+        self.cmd_update = CmdUpdate(self)
         self.cmd_gitify = CmdGitify(self)
         self.cmd_help = CmdHelp(self)
 
         self.commands = dict(
             help=self.cmd_help,
+            update=self.cmd_update,
+            up=self.cmd_update,
             h=self.cmd_help,
             fetch = self.cmd_fetch,
             push = self.cmd_push,
