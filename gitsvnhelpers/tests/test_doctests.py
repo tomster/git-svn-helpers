@@ -15,9 +15,12 @@ class TestDoctests(BaseTestCase):
         for line in output:
             print line
 
-    def test_doctests(self):
-        for testfile in ['test_gitify.txt',]:
-            doctest.testfile(testfile,
-                globs=dict(self=self, do=self.shell),
-                report=True,
-                optionflags=optionflags)
+    def _test_doctest(self):
+        doctest.testfile("%s.txt" % self._testMethodName,
+            globs=dict(self=self, do=self.shell),
+            report=True,
+            optionflags=optionflags)
+
+    def test_gitify(self):
+        self._test_doctest()
+
