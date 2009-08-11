@@ -81,16 +81,15 @@ Having gitified the branch checkout, if we now re-visit the trunk checkout,
 we will find that the git index doesn't match the filesystem anymore:
 
   >>> os.chdir(trunk_checkout)
-  >>> from jarn.mkrelease.tee import popen
-  >>> dummy = popen('git status')
+  >>> do('git status')
   # On branch local/feature-bar
   # Changed but not updated:
   #   (use "git add/rm <file>..." to update what will be committed)
   #   (use "git checkout -- <file>..." to discard changes in working directory)
   #
-  #	modified:   README.txt
-  #	deleted:    bar.py
-  #	modified:   foo.py
+  # modified:   README.txt
+  # deleted:    bar.py
+  # modified:   foo.py
   #
   no changes added to commit (use "git add" and/or "git commit -a")
 
@@ -100,3 +99,68 @@ Re-running gitify will take care of this, though:
   Git branch 'local/trunk' is now following svn branch 'trunk':
   # On branch local/trunk
   nothing to commit (working directory clean)
+
+Committing changes
+==================
+
+Let's change a file:
+
+  >>> do('echo "Updated trunk" >> README.txt')
+
+As expected, git will report the modification:
+
+  >>> do('git status')
+  # On branch local/trunk
+  # Changed but not updated:
+  #   (use "git add <file>..." to update what will be committed)
+  #   (use "git checkout -- <file>..." to discard changes in working directory)
+  #
+  # modified:   README.txt
+  #
+  no changes added to commit (use "git add" and/or "git commit -a")
+
+and subversion, too:
+
+  >>> do('svn status')
+  M      README.txt
+
+Let's commit the change to git... afterall, that's what the whole point of this
+tool is :)
+
+  >>> do('git add README.txt')
+  >>> do('git commit -a -m "Updated README" ')
+  [local/trunk]: created ...: "Updated README"
+   1 files changed, 1 insertions(+), 0 deletions(-)
+
+For svn, the file still appears modified:
+
+  >>> do('svn status')
+  M      README.txt
+
+Let's make another git commit before pushing our changes to svn:
+
+  >>> do('echo "# TODO: implement fooberizing" >> foo.py')
+  >>> do('git commit -a -m "Added TODO" ')
+  [local/trunk]: created ...: "Added TODO"
+   1 files changed, 1 insertions(+), 0 deletions(-)
+
+Now we can push our commits to svn using the ``gitify push`` command:
+
+  >>> gitify(args=['push'])
+  Committing to file://...testpackage/trunk ...
+    M README.txt
+  Committed r7
+    M README.txt
+  r7 = ... (trunk)
+  No changes between current HEAD and refs/remotes/trunk
+  Resetting to the latest refs/remotes/trunk
+  foo.py: locally modified
+    M foo.py
+  Committed r8
+    M foo.py
+  r8 = ... (trunk)
+  No changes between current HEAD and refs/remotes/trunk
+  Resetting to the latest refs/remotes/trunk
+  G    foo.py
+  G    README.txt
+  Updated to revision 8.
