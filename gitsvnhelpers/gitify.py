@@ -137,7 +137,6 @@ class Gitify(object):
         self.commands = dict(
             help=self.cmd_help,
             h=self.cmd_help,
-            up = self.cmd_fetch,
             fetch = self.cmd_fetch,
             push = self.cmd_push,
             gitify = self.cmd_gitify,
