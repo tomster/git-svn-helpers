@@ -15,14 +15,13 @@ Setup
 
 To test this, we create two checkouts of ``trunk``, one of which we gitify
 and the other just as a plain svn checkout which we then update (to simulate
-the use case of others updating the svn repo independently of our own local
-changes.)
+the use case of others updating the remote svn repo independently of our own
+local changes.)
 
   >>> import os
   >>> from gitsvnhelpers.gitify import gitify
   >>> self.checkout('trunk')
   >>> gitified = self.checkoutdir
-  >>> os.chdir(gitified)
   >>> gitify(args=['gitify'])
   No git repository found in...
   Initiating cloning into cache.
@@ -34,15 +33,14 @@ changes.)
   # On branch local/trunk
   nothing to commit (working directory clean)
 
-  >>> self.checkout('trunk', target='svnonly')
-  >>> svnonly = self.checkoutdir
+  >>> self.checkout('trunk', target='svnremote')
+  >>> svnremote = self.checkoutdir
 
 Non-conflicting update
 **********************
 
 Starting easy, we simply add a new file to the svn repo:
 
-  >>> os.chdir(svnonly)
   >>> do('echo "Change from svn" >> svn.txt')
   >>> do('svn add svn.txt')
   A         svn.txt
@@ -87,4 +85,73 @@ Not only that, but the file has indeed been added, as well:
 
   >>> do('less svn.txt')
   Change from svn
+
+Non-conflicting changes of the same file
+========================================
+
+``git svn rebase`` handled the above case beautifully and if that was the whole
+story of updating from remote svn changes, gitify would be redundant. However,
+``git svn rebase`` easily stumbles over changes, even if ``svn up`` would handle
+them gracefully. To demonstrate this we'll 'pitch' a second svn checkout 
+against two gitified checkouts, one which we manipulate via ``git svn`` and
+the other via ``gitify``.
+
+Checking out and modifiying locally
+***********************************
+
+We first create all necessary checkouts (to ensure they all have the same
+revision) and create local changes to ``svn.txt`` without committing it:
+
+  >>> self.checkout('trunk', target='svnlocal')
+  >>> svnlocal = self.checkoutdir
+  >>> do('echo "Changed locally" >> svn.txt')
+
+  >>> self.checkout('trunk', target='gitsvn')
+  >>> gitsvn = self.checkoutdir
+  >>> gitify(args=['gitify'])
+  Git branch 'local/trunk' is now following svn branch 'trunk':
+  # On branch local/trunk
+  nothing to commit (working directory clean)
+
+  >>> do('echo "Changed locally" >> svn.txt')
+
+  >>> os.chdir(gitified)
+  >>> do('echo "Changed locally" >> svn.txt')
+
+Remote change
+*************
+
+We now modify the file via the 'remote' svn and commit that change:
+
+  >>> os.chdir(svnremote)
+  >>> do('echo "Changed locally" >> svn.txt')
+  >>> do('svn commit -m "Modified from remote svn"')
+  Sending        svn.txt
+  Transmitting file data .
+  Committed revision 8.
+
+Now we can 'pitch' the three candidates against each other how they handle
+updating the remote change.
+
+Subversion
+**********
+
+  >>> os.chdir(svnlocal)
+  >>> do("svn up")
+  G    svn.txt
+  Updated to revision 8.
+
+As we can see, subversion handled this nicely. It notices, that the local
+changes are mergable and goes ahead and does just that, informing us with the
+``G`` status. Nicely done, svn - you've set the par for the course!
+
+git-svn
+*******
+
+  >>> os.chdir(gitsvn)
+  >>> from jarn.mkrelease.tee import popen
+  >>> do('git svn rebase')
+  svn.txt: needs update
+
+``git svn`` balks at this and simply refuses to do anything :-(
 
