@@ -40,6 +40,7 @@ class BaseTestCase(SubversionSetup):
             self.checkoutdir = join(self.tempdir, target, self.packagename)
         process.system('svn checkout file://%s/%s %s' % (self.repo,
             path, self.checkoutdir))
+        os.chdir(self.checkoutdir)
 
 
 class StdOut(StringIO.StringIO):
