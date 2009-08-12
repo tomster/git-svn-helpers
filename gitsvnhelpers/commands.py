@@ -75,6 +75,7 @@ in sync.
         else:
             logger.error("An error occurred, consult output above.")
 
+
 class CmdUpdate(Command):
 
     def __init__(self, gitify, args=None):
@@ -89,4 +90,3 @@ Performs a git-svn rebase operation for the current svn checkout.
     def __call__(self):
         options, args = self.parser.parse_args(self.gitify.args[2:])
         status, dummy = popen('git svn rebase', True, True)
-
