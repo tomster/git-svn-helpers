@@ -26,7 +26,6 @@ Using gitify on a fresh svn checkout which hasn't been cloned before will
 initiate cloning of that repository:
 
   >>> self.checkout('trunk')
-  >>> os.chdir(self.checkoutdir)
   >>> gitify(args=['gitify'])
   No git repository found in...
   Initiating cloning into cache.
@@ -46,7 +45,6 @@ the cloned repository:
 
   >>> trunk_checkout = self.checkoutdir
   >>> self.checkout('trunk', target="foo")
-  >>> os.chdir(self.checkoutdir)
   >>> gitify(args=['gitify'])
   Git branch 'local/trunk' is now following svn branch 'trunk':
   # On branch local/trunk
@@ -58,7 +56,6 @@ Switching branches between checkouts
 Gitify refuses to work on tags (because working on tags is evil!):
 
   >>> self.checkout('tags/0.1', target="atag")
-  >>> os.chdir(self.checkoutdir)
   >>> gitify(args=['gitify'])
   Traceback (most recent call last):
   ...
@@ -67,7 +64,6 @@ Gitify refuses to work on tags (because working on tags is evil!):
 But it will work on branches:
 
   >>> self.checkout('branches/feature-bar', target="bar")
-  >>> os.chdir(self.checkoutdir)
   >>> gitify(args=['gitify'])
   Git branch 'local/feature-bar' is now following svn branch 'feature-bar':
   # On branch local/feature-bar
@@ -194,7 +190,6 @@ that are committed to the svn repository we're tracking. To test this, we
 first create a new, independent svn checkout:
 
   >>> self.checkout('trunk', target='svnonly')
-  >>> os.chdir(self.checkoutdir)
   >>> do('echo "Change from svn" >> svn.txt')
   >>> do('svn add svn.txt')
   A         svn.txt
