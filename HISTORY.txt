@@ -1,7 +1,8 @@
 0.5 - Unreleased
 ----------------
 
-
+* Added ``gitify update`` command, which performs a git-svn rebase operation
+  for the current svn checkout.
 
 0.4 - 2009-08-11
 ----------------
