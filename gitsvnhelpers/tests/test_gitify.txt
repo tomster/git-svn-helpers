@@ -160,6 +160,7 @@ Now we can push our commits to svn using the ``gitify push`` command:
   G    foo.py
   G    README.txt
   Updated to revision 8.
+  Pushed local changes to svn.
 
 Now git and svn are 'in sync' IOW they both agree that there are no uncommitted
 local changes:

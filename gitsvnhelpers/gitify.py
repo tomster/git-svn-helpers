@@ -1,4 +1,3 @@
-import logging
 import optparse
 import sys
 import os
@@ -16,8 +15,6 @@ from commands import Command
 from commands import CmdPush
 from commands import CmdFetch
 from commands import CmdUpdate
-
-logger = logging.getLogger("gitify")
 
 
 class CmdGitify(Command):
@@ -116,18 +113,14 @@ class CmdHelp(Command):
 class Gitify(object):
 
     def __call__(self, **kwargs):
-        logger.setLevel(logging.INFO)
-        ch = logging.StreamHandler()
-        ch.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
-        logger.addHandler(ch)
 
         if len(kwargs) == 0:
             if is_git():
-                logger.error("This seems to be a local git repository!")
+                print "This seems to be a local git repository!"
                 return
 
             if not is_svn():
-                logger.error("This only works on svn checkouts!")
+                print "This only works on svn checkouts!"
                 return
 
         self.cmd_push = CmdPush(self)
@@ -160,9 +153,9 @@ class Gitify(object):
         self.commands.get(command, self.unknown)()
 
     def unknown(self):
-        logger.error("Unknown command '%s'." % self.args[1])
-        logger.info("Type '%s help' for usage." % \
-            os.path.basename(self.args[0]))
+        print "Unknown command '%s'." % self.args[1]
+        print "Type '%s help' for usage." % \
+            os.path.basename(self.args[0])
         sys.exit(1)
 
 

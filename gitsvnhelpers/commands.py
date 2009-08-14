@@ -1,12 +1,9 @@
-import logging
 import optparse
 import os
 from os.path import abspath
 from glob import glob
 from jarn.mkrelease.tee import popen
 import config
-
-logger = logging.getLogger("gitify")
 
 
 class Command(object):
@@ -71,9 +68,9 @@ in sync.
         status, dummy = popen('git svn dcommit', True, True)
         if status == 0:
             popen('svn up --force', True, True)
-            logger.info("Pushed local changes to svn.")
+            print "Pushed local changes to svn."
         else:
-            logger.error("An error occurred, consult output above.")
+            print "An error occurred, consult output above."
 
 
 class CmdUpdate(Command):
