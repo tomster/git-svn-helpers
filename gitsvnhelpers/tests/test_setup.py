@@ -1,5 +1,3 @@
-import os
-
 from gitsvnhelpers.testing import BaseTestCase
 from gitsvnhelpers.utils import basename
 from gitsvnhelpers.utils import is_git
@@ -14,7 +12,6 @@ class TestUtils(BaseTestCase):
 
     def test_utils_on_trunk(self):
         self.checkout('trunk')
-        os.chdir(self.checkoutdir)
         self.failUnless(is_svn())
         self.failIf(is_git())
         self.failUnlessEqual(svn_type(), 'trunk')
@@ -25,7 +22,6 @@ class TestUtils(BaseTestCase):
 
     def test_utils_on_branch(self):
         self.checkout('branches/feature-bar')
-        os.chdir(self.checkoutdir)
         self.failUnless(is_svn())
         self.failIf(is_git())
         self.failUnlessEqual(svn_type(), 'branches')
@@ -36,7 +32,6 @@ class TestUtils(BaseTestCase):
 
     def test_utils_on_tag(self):
         self.checkout('tags/0.1')
-        os.chdir(self.checkoutdir)
         self.failUnless(is_svn())
         self.failIf(is_git())
         self.failUnlessEqual(svn_type(), 'tags')
@@ -44,3 +39,4 @@ class TestUtils(BaseTestCase):
         self.failUnlessEqual(svn_branch(), '0.1')
         self.failUnless(svn_url().endswith('/testpackage/tags/0.1'))
         self.failUnless(base_url().endswith('/testpackage/'))
+
