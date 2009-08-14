@@ -1,4 +1,12 @@
 dist/*
 build/*
 setup.cfg
+bin/
+elementtree-1.2.7_20070827_preview-py2.6.egg
+gitsvnhelpers/tests/test_git.txt
+include/
+jarn.mkrelease-2.0.1-py2.6.egg/
+lib/
+setuptools_git-0.3.4-py2.6.egg
+setuptools_hg-0.2-py2.6.egg
 
