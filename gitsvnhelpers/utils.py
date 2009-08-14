@@ -110,3 +110,12 @@ def index_is_dirty():
     """
     result, output = popen('git diff --cached', False, False)
     return len(output) > 0
+
+def local_changes():
+    """ returns whether there are uncommitted local changes
+    """
+    result, output = popen('git status', False, False)
+    try:
+        return not output[1].startswith("nothing to commit")
+    except IndexError:
+        return True
