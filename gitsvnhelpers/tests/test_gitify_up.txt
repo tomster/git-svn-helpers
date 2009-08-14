@@ -108,10 +108,16 @@ revision) and create local changes to ``svn.txt`` without committing it:
 
   >>> self.checkout('trunk', target='gitsvn')
   >>> gitsvn = self.checkoutdir
-  >>> gitify(args=['gitify'])
-  Git branch 'local/trunk' is now following svn branch 'trunk':
-  # On branch local/trunk
-  nothing to commit (working directory clean)
+  >>> do('git svn clone file://%s -s .' % self.repo)
+  Initialized empty Git repository in /...
+  r1 = ... (trunk)
+  	A	README.txt
+  ...
+
+  >>> do('git checkout -f -b local/trunk trunk')
+  >>> do('git branch')
+  * local/trunk
+    master
 
   >>> do('echo "Changed locally" >> svn.txt')
 
@@ -154,4 +160,17 @@ git-svn
   svn.txt: needs update
 
 ``git svn`` balks at this and simply refuses to do anything :-(
+
+
+  >>> do('git commit -a -m "Modified from gitsvn"')
+  [local/trunk]: created ...: "Modified from gitsvn"
+   1 files changed, 1 insertions(+), 0 deletions(-)
+
+  >>> do('git svn rebase')
+  	M	svn.txt
+  r8 = ... (trunk)
+  First, rewinding head to replay your work on top of it...
+  Nothing to do.
+
+  >>> do('git svn rebase')
 
