@@ -183,8 +183,6 @@ TODO
    information of the source. That means we couldn't dcommit from our cloned
    repository! Eventually, this should be fixed up-stream in git svn.
 
- * Implement updating the local checkout with remote svn changes (``gitify up``)
-
  * Don't insist on the directory name of the checkout being identical to the package name
 
  * add support for custom svn layout
