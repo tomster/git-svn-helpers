@@ -4,7 +4,7 @@ from os.path import abspath
 from glob import glob
 from jarn.mkrelease.tee import popen
 import config
-
+from utils import local_changes
 
 class Command(object):
 
@@ -86,9 +86,13 @@ Performs a git-svn rebase operation for the current svn checkout.
 
     def __call__(self):
         options, args = self.parser.parse_args(self.gitify.args[2:])
+        stashed = False
+        if local_changes():
+            stashed = True
+            print "Stashing uncommitted local changes."
+            status, dummy = popen('git stash', False, False)
         status, dummy = popen('git svn rebase', False, False)
-        if status == 1:
-            print 'Uncommitted local changes.'
-        else:
-            for line in dummy:
-                print line
+        for line in dummy:
+            print line
+        if stashed:
+            status, dummy = popen('git stash pop', False, False)

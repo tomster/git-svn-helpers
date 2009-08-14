@@ -123,6 +123,7 @@ revision) and create local changes to ``svn.txt`` without committing it:
 
   >>> os.chdir(gitified)
   >>> do('echo "Changed locally" >> svn.txt')
+  >>> do('echo "From gitify." >> svn.txt')
 
 Remote change
 *************
@@ -161,10 +162,13 @@ git-svn
 
 ``git svn`` balks at this and simply refuses to do anything :-(
 
+If we commit our changes:
 
   >>> do('git commit -a -m "Modified from gitsvn"')
   [local/trunk]: created ...: "Modified from gitsvn"
    1 files changed, 1 insertions(+), 0 deletions(-)
+
+The rebase command works as expected:
 
   >>> do('git svn rebase')
   	M	svn.txt
@@ -172,11 +176,43 @@ git-svn
   First, rewinding head to replay your work on top of it...
   Nothing to do.
 
-  >>> do('git svn rebase')
+Now the slate is clean:
+
+  >>> do('git status')
+  # On branch local/trunk
+  nothing to commit (working directory clean)
 
 gitify
 ******
 
+Gitify will stash the changes and go ahead with the rebase. To verify this,
+let's first check the status:
+
   >>> os.chdir(gitified)
+  >>> do('git status')
+  # On branch local/trunk
+  # Changed but not updated:
+  #   (use "git add <file>..." to update what will be committed)
+  #   (use "git checkout -- <file>..." to discard changes in working directory)
+  #
+  #	modified:   svn.txt
+  #
+  no changes added to commit (use "git add" and/or "git commit -a")
+
   >>> gitify(args=['update'])
-  Uncommitted local changes.
+  Stashing uncommitted local changes.
+  ...
+
+This leaves us (as desired) with the uncomitted changes we started out with,
+except that git now calls them 'unmerged' instead of 'modified':
+
+  >>> do('git status')
+  svn.txt: needs merge
+  # On branch local/trunk
+  # Changed but not updated:
+  #   (use "git add <file>..." to update what will be committed)
+  #   (use "git checkout -- <file>..." to discard changes in working directory)
+  #
+  #	unmerged:   svn.txt
+  #
+  no changes added to commit (use "git add" and/or "git commit -a")
