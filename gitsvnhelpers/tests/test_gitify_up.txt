@@ -161,13 +161,10 @@ git-svn
 
 ``git svn`` balks at this and simply refuses to do anything :-(
 
-If we commit our changes:
 
   >>> do('git commit -a -m "Modified from gitsvn"')
   [local/trunk]: created ...: "Modified from gitsvn"
    1 files changed, 1 insertions(+), 0 deletions(-)
-
-The rebase command works as expected:
 
   >>> do('git svn rebase')
   	M	svn.txt
@@ -175,11 +172,10 @@ The rebase command works as expected:
   First, rewinding head to replay your work on top of it...
   Nothing to do.
 
+  >>> do('git svn rebase')
+
 gitify
 ******
-
-Gitify inherits this limit of ``git svn`` but at least it gives us an explicit
-message :)
 
   >>> os.chdir(gitified)
   >>> gitify(args=['update'])
