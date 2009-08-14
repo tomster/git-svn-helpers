@@ -174,3 +174,9 @@ git-svn
 
   >>> do('git svn rebase')
 
+gitify
+******
+
+  >>> os.chdir(gitified)
+  >>> gitify(args=['update'])
+  Uncommitted local changes.

@@ -86,4 +86,9 @@ Performs a git-svn rebase operation for the current svn checkout.
 
     def __call__(self):
         options, args = self.parser.parse_args(self.gitify.args[2:])
-        status, dummy = popen('git svn rebase', True, True)
+        status, dummy = popen('git svn rebase', False, False)
+        if status == 1:
+            print 'Uncommitted local changes.'
+        else:
+            for line in dummy:
+                print line
