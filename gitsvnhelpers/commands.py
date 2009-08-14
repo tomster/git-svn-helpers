@@ -88,7 +88,8 @@ Performs a git-svn rebase operation for the current svn checkout.
         options, args = self.parser.parse_args(self.gitify.args[2:])
         status, dummy = popen('git svn rebase', False, False)
         if status == 1:
-            print 'Uncommitted local changes.'
+            import pdb; pdb.set_trace( )
+            print 'Uncommitted local changes: you need to commit (or stash) them first'
         else:
             for line in dummy:
                 print line
