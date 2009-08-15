@@ -42,6 +42,8 @@ Points to note:
  * gitify limited the cloning to the revisions found in the svn log of the package root (here ``https://svn.plone.org/svn/plone/plone.app.form/``). A big time saver, especially on large repositories (such as plone.collective)
  * gitify created the git repository at ``~/.gitcache`` *not in place*
  * gitify created a local branch ``local/1.1`` that follows the (remote) svn branch ``1.1`` and switched to it
+ * gitify assumed that the name of the package is the name of the directory it 
+   was called from (in this case ``plone.app.form``) as it refuses to guess
 
 Multiple check-outs
 ===================
@@ -182,7 +184,5 @@ TODO
    clone`` command). *However*, ``git clone`` currently doesn't preserve the svn
    information of the source. That means we couldn't dcommit from our cloned
    repository! Eventually, this should be fixed up-stream in git svn.
-
- * Don't insist on the directory name of the checkout being identical to the package name
 
  * add support for custom svn layout

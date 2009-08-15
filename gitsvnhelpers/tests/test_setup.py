@@ -1,3 +1,4 @@
+import os
 from gitsvnhelpers.testing import BaseTestCase
 from gitsvnhelpers.utils import basename
 from gitsvnhelpers.utils import is_git
@@ -40,3 +41,12 @@ class TestUtils(BaseTestCase):
         self.failUnless(svn_url().endswith('/testpackage/tags/0.1'))
         self.failUnless(base_url().endswith('/testpackage/'))
 
+    def test_utils_on_custom_target(self):
+        # gitify always works under the assumption, that the package
+        # name is the name of the directory it's been invoked in.
+        self.checkout('trunk')
+        self.failUnlessEqual(basename(), 'testpackage')
+        new_checkoutdir = ("%s/trunk" % self.tempdir)
+        os.rename(self.checkoutdir, new_checkoutdir)
+        self.checkoutdir = new_checkoutdir
+        self.failIfEqual(basename(), 'testpackage')
