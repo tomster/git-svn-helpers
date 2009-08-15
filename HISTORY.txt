@@ -1,5 +1,5 @@
-0.5 - Unreleased
-----------------
+0.5 - 2009-08-15 (a.k.a. HAR2009 release)
+-----------------------------------------
 
 * Added ``gitify update`` command, which performs a git-svn rebase operation
   for the current svn checkout but also handles uncommitted local changes
