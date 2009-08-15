@@ -3,7 +3,7 @@
 
 * Added ``gitify update`` command, which performs a git-svn rebase operation
   for the current svn checkout but also handles uncommitted local changes
-  gracelully (unlike ``git svn`` but like svn does)
+  gracefully (unlike ``git svn`` but like svn does)
 
 * No longer use the logging module for user feedback. That idea was rather
   misguided :)
