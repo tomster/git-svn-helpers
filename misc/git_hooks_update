@@ -141,7 +141,7 @@ case "$refname","$newrev_type" in
 				fi
 				_newid="$(echo $newid |cut -d'@' -f1) $(echo $newid |cut -d' ' -f2)"
 				_oldid="$(echo $oldid |cut -d'@' -f1) $(echo $oldid |cut -d' ' -f2)"
-				if [ "$newid" != "$oldid" ]; then
+				if [ "$_newid" != "$_oldid" ]; then
 					echo "*** Declined commit: git-svn-id differs too much from oldrev" >&2
 					exit 1
 				fi
