@@ -1,9 +1,13 @@
 #!/bin/sh
 #
+# git update hook extending the example update hook by requiregitsvnid and
+# checkgitsvnid. see config doc right below. You can use this to make sure your
+# repo does not accept commits that have not been dcommitted to svn yet.
+#
 # An example hook script to blocks unannotated tags from entering.
 # Called by git-receive-pack with arguments: refname sha1-old sha1-new
 #
-# To enable this hook, rename this file to "update".
+# To enable this hook, save it as .git/hooks/update and configure accordingly.
 #
 # Config
 # ------
@@ -22,6 +26,22 @@
 # hooks.denycreatebranch
 #   This boolean sets whether remotely creating branches will be denied
 #   in the repository.  By default this is allowed.
+# hooks.requiregitsvnid
+#   This boolean sets whether commits need to contain a git-svn-id, i.e. have
+#   been committed with 'git svn dcommit' to a svn server already. By default,
+#   further checks are enabled, see hooks.disablegitsvnidchecks.
+#   By default no git-svn-id is required.
+# hooks.disablegitsvnidchecks
+#   This boolean sets whether checks on the git-svn-id are disabled. This is
+#   highly discouraged and should only be used for testing purposes!.
+#   Checks performed:
+#     - newrev author email domain == oldrev author email domain
+#     - newrev commitmsg contains a git-svn-id
+#     - oldrev commitmsg contains a git-svn-id
+#     - oldrev git-svn-id == newrev git-svn-id, except for the svn revision
+#   Example git-svn-id line in commitmsg:
+#     git-svn-id: url-to-svn-repo/trunk@57924 db7f04ef-aaf3-0310-a811-c281ed44c4ad
+#   By default checks are enabled.
 #
 
 # --- Command line
@@ -48,6 +68,8 @@ allowdeletebranch=$(git config --bool hooks.allowdeletebranch)
 denycreatebranch=$(git config --bool hooks.denycreatebranch)
 allowdeletetag=$(git config --bool hooks.allowdeletetag)
 allowmodifytag=$(git config --bool hooks.allowmodifytag)
+requiregitsvnid=$(git config --bool hooks.requiregitsvnid)
+disablegitsvnidchecks=$(git config --bool hooks.disablegitsvnidchecks)
 
 # check for no description
 projectdesc=$(sed -e '1q' "$GIT_DIR/description")
@@ -66,6 +88,12 @@ if [ "$newrev" = "$zero" ]; then
 else
 	newrev_type=$(git-cat-file -t $newrev)
 fi
+
+getgitsvnid() {
+    rev=$1
+    gitsvnid=$(git show -s --pretty=%b $rev |grep ^git-svn-id: |cut -d' ' -f2-)
+    echo -n $gitsvnid
+}
 
 case "$refname","$newrev_type" in
 	refs/tags/*,commit)
@@ -98,6 +126,26 @@ case "$refname","$newrev_type" in
 		if [ "$oldrev" = "$zero" -a "$denycreatebranch" = "true" ]; then
 			echo "*** Creating a branch is not allowed in this repository" >&2
 			exit 1
+		fi
+		if [ "$requiregitsvnid" = "true" ]; then
+			newid=$(getgitsvnid $newrev)
+			if [ "foo$newid" = "foo" ]; then
+				echo "*** Declined commit without git-svn-id: dcommit first to svn" >&2
+				exit 1
+			fi
+			if [ "$disablegitsvnidchecks" != "true" ]; then
+				oldid=$(getgitsvnid $oldrev)
+				if [ "foo$oldid" = "foo" ]; then
+					echo "*** Previous commit without git-svn-idn" >&2
+					exit 1
+				fi
+				_newid="$(echo $newid |cut -d'@' -f1) $(echo $newid |cut -d' ' -f2)"
+				_oldid="$(echo $oldid |cut -d'@' -f1) $(echo $oldid |cut -d' ' -f2)"
+				if [ "$newid" != "$oldid" ]; then
+					echo "*** Declined commit: git-svn-id differs too much from oldrev" >&2
+					exit 1
+				fi
+			fi
 		fi
 		;;
 	refs/heads/*,delete)
