@@ -1,0 +1,27 @@
+#!/bin/sh -x
+# setupgitrepo <barerepodir> [-f]
+#  -f: overwrite potentially existing update hook
+
+# Where is our update hook, will be linked into the repo
+updatehook="../../hooks/update"
+
+baregitrepo=$1
+! [ -r $baregitrepo/HEAD ] && \
+	echo "'$baregitrepo' is not a bare git repo! Aborting!" && \
+	exit 1
+
+cd $baregitrepo
+
+# make stable the current branch
+echo ref: refs/heads/stable > HEAD
+
+# refuse deletion of current branch
+git config receive.denyDeleteCurrent refuse
+
+# deny some more
+(cd hooks; ln $updatehook -s $2)
+git config hooks.allowunannotated false
+git config hooks.allowdeletetag false
+git config hooks.allowdeletebranch false
+git config hooks.denycreatebranch true
+git config hooks.requiregitsvnid true
