@@ -1,7 +1,11 @@
 import sys
 import os
 from os.path import exists, isdir, islink
-from elementtree import ElementTree
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    from xml.etree import ElementTree
+
 from jarn.mkrelease.tee import popen
 import config
 
@@ -25,15 +29,17 @@ def is_svn():
 def svn_info():
     """Returns the svn info as XML element"""
     code, result = popen('svn info --xml .', False, False)
-    return ElementTree.fromstring(''.join(result))
-
+    parser = ElementTree.XMLTreeBuilder()
+    parser.feed(''.join(result))
+    return parser.close()
 
 def svn_log():
     """Returns the svn log of the base url as XML element"""
     code, result = popen('svn log --stop-on-copy --xml %s' % base_url(),
         False, False)
-    return ElementTree.fromstring(''.join(result))
-
+    parser = ElementTree.XMLTreeBuilder()
+    parser.feed(''.join(result))
+    return parser.close()
 
 def svn_url(svninfo=None):
     """ returns the URL of the svn checkout"""
