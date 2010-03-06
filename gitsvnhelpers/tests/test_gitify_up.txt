@@ -68,8 +68,9 @@ Now let's run gitify's ``update`` command:
 
   >>> gitify(args=['update'])
   	A	svn.txt
-  r7 = ... (trunk)
+  r7 = ... (refs/remotes/trunk)
   First, rewinding head to replay your work on top of it...
+  Fast-forwarded local/trunk to refs/remotes/trunk.
 
 and voila!, the svn commit appears in the git log:
 
@@ -110,7 +111,7 @@ revision) and create local changes to ``svn.txt`` without committing it:
   >>> gitsvn = self.checkoutdir
   >>> do('git svn clone file://%s -s .' % self.repo)
   Initialized empty Git repository in /...
-  r1 = ... (trunk)
+  r1 = ... (refs/remotes/trunk)
   	A	README.txt
   ...
 
@@ -165,14 +166,14 @@ git-svn
 If we commit our changes:
 
   >>> do('git commit -a -m "Modified from gitsvn"')
-  [local/trunk]: created ...: "Modified from gitsvn"
+  [local/trunk ...] Modified from gitsvn
    1 files changed, 1 insertions(+), 0 deletions(-)
 
 The rebase command works as expected:
 
   >>> do('git svn rebase')
   	M	svn.txt
-  r8 = ... (trunk)
+  r8 = ... (refs/remotes/trunk)
   First, rewinding head to replay your work on top of it...
   Nothing to do.
 
@@ -207,12 +208,11 @@ This leaves us (as desired) with the uncomitted changes we started out with,
 except that git now calls them 'unmerged' instead of 'modified':
 
   >>> do('git status')
-  svn.txt: needs merge
   # On branch local/trunk
-  # Changed but not updated:
-  #   (use "git add <file>..." to update what will be committed)
-  #   (use "git checkout -- <file>..." to discard changes in working directory)
+  # Unmerged paths:
+  #   (use "git reset HEAD <file>..." to unstage)
+  #   (use "git add <file>..." to mark resolution)
   #
-  #	unmerged:   svn.txt
+  #	both modified:      svn.txt
   #
   no changes added to commit (use "git add" and/or "git commit -a")

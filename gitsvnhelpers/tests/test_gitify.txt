@@ -125,7 +125,7 @@ tool is :)
 
   >>> do('git add README.txt')
   >>> do('git commit -a -m "Updated README" ')
-  [local/trunk]: created ...: "Updated README"
+  [local/trunk...] Updated README
    1 files changed, 1 insertions(+), 0 deletions(-)
 
 For svn, the file still appears modified:
@@ -137,30 +137,31 @@ Let's make another git commit before pushing our changes to svn:
 
   >>> do('echo "# TODO: implement fooberizing" >> foo.py')
   >>> do('git commit -a -m "Added TODO" ')
-  [local/trunk]: created ...: "Added TODO"
+  [local/trunk...] Added TODO
    1 files changed, 1 insertions(+), 0 deletions(-)
 
 Now we can push our commits to svn using the ``gitify push`` command:
 
   >>> gitify(args=['push'])
-  Committing to file://...testpackage/trunk ...
-    M README.txt
-  Committed r7
-    M README.txt
-  r7 = ... (trunk)
-  No changes between current HEAD and refs/remotes/trunk
-  Resetting to the latest refs/remotes/trunk
-  foo.py: locally modified
-    M foo.py
-  Committed r8
-    M foo.py
-  r8 = ... (trunk)
-  No changes between current HEAD and refs/remotes/trunk
-  Resetting to the latest refs/remotes/trunk
-  G    foo.py
-  G    README.txt
-  Updated to revision 8.
-  Pushed local changes to svn.
+    Committing to file:///...testpackage/trunk ...
+    	M	README.txt
+    Committed r7
+    	M	README.txt
+    r7 = ... (refs/remotes/trunk)
+    No changes between current HEAD and refs/remotes/trunk
+    Resetting to the latest refs/remotes/trunk
+    Unstaged changes after reset:
+    M	foo.py
+    	M	foo.py
+    Committed r8
+    	M	foo.py
+    r8 = ... (refs/remotes/trunk)
+    No changes between current HEAD and refs/remotes/trunk
+    Resetting to the latest refs/remotes/trunk
+    G    foo.py
+    G    README.txt
+    Updated to revision 8.
+    Pushed local changes to svn.
 
 Now git and svn are 'in sync' IOW they both agree that there are no uncommitted
 local changes:
