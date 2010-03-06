@@ -1,0 +1,4 @@
+include MANIFEST.in HISTORY.txt README.txt
+recursive-include misc git_hooks_update  setupgitrepo
+recursive-include gitsvnhelpers/tests *.txt
+recursive-include gitsvnhelpers/tests/testrepo.svn *
