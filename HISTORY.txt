@@ -1,7 +1,12 @@
 0.6 - Unreleased
 ----------------
 
+* add a file manifest so that all necessary files will get included for sdist
+  [proyvind]
 
+* sample update hook for enforcing dcommits to help keeping the svn and git 
+  repositories in sync
+  [chaoflow]
 
 0.5 - 2009-08-15 (a.k.a. HAR2009 release)
 -----------------------------------------
