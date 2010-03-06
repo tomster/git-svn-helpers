@@ -93,7 +93,7 @@ def clone():
         sys.exit(1)
 
     print "Analyzing svn log..."
-    logentries = svn_log().getiterator('logentry')
+    logentries = list(svn_log().getiterator('logentry'))
     last_revision = logentries[0].attrib['revision']
     first_revision = logentries[-1].attrib['revision']
     baseurl = base_url()
