@@ -1,6 +1,7 @@
 import optparse
 import sys
 import os
+import pkg_resources
 from os.path import exists
 
 import config
@@ -21,8 +22,10 @@ class CmdGitify(Command):
 
     def __init__(self, gitify):
         Command.__init__(self, gitify)
+        self.version = pkg_resources.get_distribution("git-svn-helpers").version
         self.parser = optparse.OptionParser(
             usage = "%prog",
+            version="%prog " + self.version,
             description = """
             """,
             add_help_option=False)
@@ -114,11 +117,11 @@ class Gitify(object):
 
     def __call__(self, **kwargs):
 
-        if len(kwargs) == 0:
+        if len(kwargs) == 0 and sys.argv[-1] !='--version':
             if is_git():
                 print "This seems to be a local git repository!"
                 return
-
+        
             if not is_svn():
                 print "This only works on svn checkouts!"
                 return
@@ -145,10 +148,16 @@ class Gitify(object):
         else:
             self.args = sys.argv
 
+        # if no command was given, default to gitify
         try:
             command = self.args[1]
         except IndexError:
             command = 'gitify'
+
+        # pass --version onto gitify
+        if command == '--version':
+            command = 'gitify'
+            self.args.append('--version')
 
         self.commands.get(command, self.unknown)()
 
