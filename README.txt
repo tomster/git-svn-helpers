@@ -7,13 +7,26 @@ existing svn checkout a 'no-brainer'.
 It also addresses using a single git-svn repository for working on multiple
 checkouts of (usually) different branches and switching between them.
 
-Basic usage (Example)
-=====================
+Basic usage
+===========
 
 Executive summary::
 
     > cd path/to/svn/repo
     > gitify
+
+Perform local changes and commit them to git. When ready to push your changes::
+
+    > gitify push
+
+To update your working directory with upstream changes::
+
+    > gitify update
+
+gitify will take care to keep your git and svn repository in sync and do its best to avoid conflicts when updating.
+
+Sample session
+==============
 
 Here's a sample session::
 
