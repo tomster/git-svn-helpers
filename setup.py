@@ -31,7 +31,7 @@ setup(name='git-svn-helpers',
     url='http://github.com/tomster/git-svn-helpers',
     license='',
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
-    include_package_data=True,
+    include_package_data=False,
     zip_safe=False,
     test_suite='gitsvnhelpers.tests',
     install_requires=[
