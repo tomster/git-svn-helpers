@@ -11,7 +11,7 @@ First we create a checkout. This creates an entry of the testpackage in the cach
   >>> import os
   >>> from gitsvnhelpers.gitify import gitify
   >>> self.checkout('trunk')
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   No git repository found in...
   Initiating cloning into cache.
   Analyzing svn log...

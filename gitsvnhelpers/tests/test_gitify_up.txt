@@ -22,7 +22,7 @@ local changes.)
   >>> from gitsvnhelpers.gitify import gitify
   >>> self.checkout('trunk')
   >>> gitified = self.checkoutdir
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   No git repository found in...
   Initiating cloning into cache.
   Analyzing svn log...

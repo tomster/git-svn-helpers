@@ -12,9 +12,17 @@
 
   Running gitify against an old-style working copy will produce an error.
   Simply deleting the symlink and re-running gitify remedies that, however.
+
+  Another effect, is that the init command is now only needed once for each
+  working copy (it is no longer necessary to re-run the command after
+  switching between different working copies of the same repository).
+  
+  gitify therefore no longer defaults to the init command (just as neither
+  git nor svn do anything w/o supplying an explicit action). Also, it has been
+  renamed from ``gitify`` (back) to ``init``.
   [tomster]
 
-* Allow the help, --version and fetch commands to run outside .svn directories
+* Allow the ``help``, ``--version`` and ``fetch`` commands to run outside .svn directories
   [tomster]
 
 0.6 - 2010-03-07

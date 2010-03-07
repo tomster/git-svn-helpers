@@ -17,7 +17,7 @@ from commands import CmdPush
 from commands import CmdFetch
 from commands import CmdUpdate
 
-class CmdGitify(Command):
+class CmdInit(Command):
 
     def __init__(self, gitify):
         Command.__init__(self, gitify)
@@ -133,7 +133,7 @@ class Gitify(object):
         self.cmd_push = CmdPush(self)
         self.cmd_fetch = CmdFetch(self)
         self.cmd_update = CmdUpdate(self)
-        self.cmd_gitify = CmdGitify(self)
+        self.cmd_init = CmdInit(self)
         self.cmd_help = CmdHelp(self)
 
         self.commands = dict(
@@ -143,7 +143,7 @@ class Gitify(object):
             h=self.cmd_help,
             fetch = self.cmd_fetch,
             push = self.cmd_push,
-            gitify = self.cmd_gitify,
+            init = self.cmd_init,
         )
 
         # allow sys.argv to be overridden (used for testing)
@@ -152,15 +152,15 @@ class Gitify(object):
         else:
             self.args = sys.argv
 
-        # if no command was given, default to gitify
+        # if no command was given, default to usage
         try:
             command = self.args[1]
         except IndexError:
-            command = 'gitify'
+            command = 'help'
 
-        # pass --version onto gitify
+        # pass --version onto init
         if command == '--version':
-            command = 'gitify'
+            command = 'init'
             self.args.append('--version')
 
         self.commands.get(command, self.unknown)()

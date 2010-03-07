@@ -22,7 +22,7 @@ Manually create an old-style symlink to simulate an old-style working copy:
 Now we run gitify commands and make sure they are *not* executed and that we're 
 being warned instead:
 
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   ERROR: It seems this working directory has been created with an older version of gitify.
   Please remove the `.git` symlink and re-run gitify to update.
   Aborting.
@@ -34,7 +34,7 @@ being warned instead:
 We remove the offending link and try again as per instructions:
 
   >>> self.shell('rm .git')
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   No git repository found in...
   Initiating cloning into cache.
   Analyzing svn log...
