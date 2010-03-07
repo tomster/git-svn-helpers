@@ -1,0 +1,32 @@
+NOTE: to run this test requires both `svn` and `git` to be on `$PATH`.
+
+Runnign fetch
+=============
+
+The fetch updates all or some of the local cashes. It is primarily intended
+to be run as a maintenance command, i.e. via crontab to keep local copies 'fresh'.
+
+First we create a checkout. This creates an entry of the testpackage in the cache.
+
+  >>> import os
+  >>> from gitsvnhelpers.gitify import gitify
+  >>> self.checkout('trunk')
+  >>> gitify(args=['gitify'])
+  No git repository found in...
+  Initiating cloning into cache.
+  Analyzing svn log...
+  Cloning file:///...
+  Initialized empty Git repository in ...
+  ...
+  Git branch 'local/trunk' is now following svn branch 'trunk':
+  # On branch local/trunk
+  nothing to commit (working directory clean)
+
+If we run without parameters, it will try to fetch all, in this case, the only one.
+
+  >>> gitify(args=['fetch'])
+  fetching .../.gitcache/testpackage
+  Done. 1 packages updated.
+
+TODO: test with multiple repos. However, that's just simple globbing, so no
+high priority.

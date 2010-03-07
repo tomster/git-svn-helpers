@@ -17,7 +17,6 @@ from commands import CmdPush
 from commands import CmdFetch
 from commands import CmdUpdate
 
-
 class CmdGitify(Command):
 
     def __init__(self, gitify):
@@ -50,6 +49,10 @@ class CmdGitify(Command):
             print "No git repository found in %s." % config.GIT_CACHE
             print "Initiating cloning into cache."
             clone()
+        else:
+            # if we already have a cached copy, make sure it's up-to-date:
+            print "Updating existing cache:"
+            gitify(args=['fetch', package_name])
 
         # get the branch svn is on
         remote_branch = svn_branch()
@@ -70,7 +73,7 @@ class CmdGitify(Command):
 
         os.chdir(cwd)
         if not exists('.git'):
-            popen('ln -s %s%s/.git' % (config.GIT_CACHE, package_name), False, False)
+            popen('cp -Rp %s%s/.git .' % (config.GIT_CACHE, package_name), False, False)
 
         print "Git branch '%s' is now following svn branch '%s':" % (
             local_branch, remote_branch)

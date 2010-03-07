@@ -22,6 +22,10 @@ class CmdFetch(Command):
 Performs a git-svn fetch operation for the given packages inside the
 cache directory. If no parameter is passed, all cached packages are
 updated.
+
+It does not alter the local checkout, only the cache. Is primarily
+intended to be run as a maintenance command, i.e. via crontab to keep
+local copies 'fresh'.
             """,
             add_help_option=False)
         self.parser.add_option("-v", "--verbose", dest="verbose",

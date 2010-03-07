@@ -1,7 +1,15 @@
 0.7 - Unreleased
 ----------------
 
-
+* Use full copies instead of symlinks to create working copies. This avoids
+  the issue of having the git and svn repository out of sync when working
+  with multiple copies of the same repository and greatly reduces the risk of
+  conflicts.
+  
+  This also means, that the fetch command now only operates on the cache 
+  without modifying the working copy (making it safe to run via crontab,
+  for example)
+  [tomster]
 
 0.6 - 2010-03-07
 ----------------
