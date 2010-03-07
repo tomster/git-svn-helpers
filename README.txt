@@ -13,7 +13,7 @@ Basic usage
 Executive summary::
 
     > cd path/to/svn/repo
-    > gitify
+    > gitify init
 
 Perform local changes and commit them to git. When ready to push your changes::
 
@@ -36,7 +36,7 @@ Here's a sample session::
     ...
     Checked out revision 27228.
     > cd plone.app.form
-    > gitify
+    > gitify init
     No git repository found in /Users/tomster/.gitcache/.
     Initiating cloning into cache.
     Analyzing svn log...
@@ -76,7 +76,7 @@ In practice you will often work with different local copies of a given repositor
 What happens if we run gitify here?::
 
     > cd plone.app.form/
-    > gitify
+    > gitify init
     Updating existing cache:
     fetching /Users/tomster/.gitcache/plone.app.form
     Done. 1 packages updated.

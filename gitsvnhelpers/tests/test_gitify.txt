@@ -24,7 +24,7 @@ Initial execution
 Running gitify on a directory that does not contain a .svn repository raises an error:
 
   >>> os.chdir(self.tempdir)
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   Traceback (most recent call last):
   ... 
   SystemExit: 1
@@ -33,7 +33,7 @@ However, using gitify on a fresh svn checkout which hasn't been cloned before wi
 initiate cloning of that repository:
 
   >>> self.checkout('trunk')
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   No git repository found in...
   Initiating cloning into cache.
   Analyzing svn log...
@@ -52,7 +52,7 @@ the cloned repository:
 
   >>> trunk_checkout = self.checkoutdir
   >>> self.checkout('trunk', target="foo")
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   Updating existing cache:
   fetching .../.gitcache/testpackage
   Done. 1 packages updated.
@@ -66,7 +66,7 @@ Switching branches between checkouts
 Gitify refuses to work on tags (because working on tags is evil!):
 
   >>> self.checkout('tags/0.1', target="atag")
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   Traceback (most recent call last):
   ...
   SystemExit: 1
@@ -74,7 +74,7 @@ Gitify refuses to work on tags (because working on tags is evil!):
 But it will work on branches:
 
   >>> self.checkout('branches/feature-bar', target="bar")
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   Updating existing cache:
   fetching .../.gitcache/testpackage
   Done. 1 packages updated.
