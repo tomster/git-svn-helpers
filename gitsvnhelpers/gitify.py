@@ -35,6 +35,10 @@ class CmdGitify(Command):
     def __call__(self):
         options, args = self.parser.parse_args(self.gitify.args[2:])
 
+        if not is_svn():
+            print "This only works on svn checkouts!"
+            sys.exit(1)
+
         package_name = basename()
         svntype = svn_type()
 
@@ -119,10 +123,6 @@ class CmdHelp(Command):
 class Gitify(object):
 
     def __call__(self, **kwargs):
-
-        if len(kwargs) == 0 and sys.argv[-1] !='--version' and not is_svn():
-            print "This only works on svn checkouts!"
-            return
 
         if is_git_link():
             print "ERROR: It seems this working directory has been created with an older version of gitify."

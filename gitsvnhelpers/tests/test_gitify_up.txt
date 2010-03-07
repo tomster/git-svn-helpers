@@ -36,6 +36,26 @@ local changes.)
   >>> self.checkout('trunk', target='svnremote')
   >>> svnremote = self.checkoutdir
 
+Requires svn
+************
+
+Running update on a directory that does not contain a .svn repository raises an error:
+
+  >>> os.chdir(self.tempdir)
+  >>> gitify(args=['update'])
+  Traceback (most recent call last):
+  ... 
+  SystemExit: 1
+
+The same goes for the push command
+
+  >>> gitify(args=['push'])
+  Traceback (most recent call last):
+  ... 
+  SystemExit: 1
+
+  >>> os.chdir(self.checkoutdir)
+
 Non-conflicting update
 **********************
 

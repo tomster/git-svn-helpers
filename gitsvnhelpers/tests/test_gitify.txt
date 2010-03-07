@@ -5,7 +5,6 @@ Basic Argument handling
 
 An unknown command raises a SystemExit:
 
-
   >>> import os
   >>> from gitsvnhelpers.gitify import gitify
   >>> gitify(args=['xxx', '-v'])
@@ -22,7 +21,15 @@ A known command doesn't:
 Initial execution
 =================
 
-Using gitify on a fresh svn checkout which hasn't been cloned before will
+Running gitify on a directory that does not contain a .svn repository raises an error:
+
+  >>> os.chdir(self.tempdir)
+  >>> gitify(args=['gitify'])
+  Traceback (most recent call last):
+  ... 
+  SystemExit: 1
+
+However, using gitify on a fresh svn checkout which hasn't been cloned before will
 initiate cloning of that repository:
 
   >>> self.checkout('trunk')

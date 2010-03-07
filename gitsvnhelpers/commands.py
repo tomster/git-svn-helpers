@@ -1,10 +1,12 @@
 import optparse
 import os
+import sys
 from os.path import abspath
 from glob import glob
 from jarn.mkrelease.tee import popen
 import config
 from utils import local_changes
+from utils import is_svn
 
 class Command(object):
 
@@ -70,6 +72,11 @@ in sync.
     def __call__(self):
         options, args = self.parser.parse_args(self.gitify.args[2:])
         status, dummy = popen('git svn dcommit', True, True)
+
+        if not is_svn():
+            print "This only works on svn checkouts!"
+            sys.exit(1)
+
         if status == 0:
             popen('svn up --force', True, True)
             print "Pushed local changes to svn."
@@ -90,6 +97,11 @@ Performs a git-svn rebase operation for the current svn checkout.
 
     def __call__(self):
         options, args = self.parser.parse_args(self.gitify.args[2:])
+
+        if not is_svn():
+            print "This only works on svn checkouts!"
+            sys.exit(1)
+
         stashed = False
         if local_changes():
             stashed = True

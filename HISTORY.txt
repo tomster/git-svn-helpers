@@ -14,6 +14,9 @@
   Simply deleting the symlink and re-running gitify remedies that, however.
   [tomster]
 
+* Allow the help, --version and fetch commands to run outside .svn directories
+  [tomster]
+
 0.6 - 2010-03-07
 ----------------
 

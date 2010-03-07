@@ -1,6 +1,6 @@
 NOTE: to run this test requires both `svn` and `git` to be on `$PATH`.
 
-Runnign fetch
+Running fetch
 =============
 
 The fetch updates all or some of the local cashes. It is primarily intended
@@ -23,7 +23,9 @@ First we create a checkout. This creates an entry of the testpackage in the cach
   nothing to commit (working directory clean)
 
 If we run without parameters, it will try to fetch all, in this case, the only one.
+The fetch command does not depend on being run inside a working copy, so we change out of, first:
 
+  >>> os.chdir(self.tempdir)
   >>> gitify(args=['fetch'])
   fetching .../.gitcache/testpackage
   Done. 1 packages updated.
