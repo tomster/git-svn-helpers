@@ -8,6 +8,9 @@
   repositories in sync
   [chaoflow]
 
+* updated tests to work with git 1.6.x
+  [tomster]
+
 0.5 - 2009-08-15 (a.k.a. HAR2009 release)
 -----------------------------------------
 
