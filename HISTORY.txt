@@ -1,4 +1,4 @@
-0.7 - Unreleased
+0.7 - 2010-03-07
 ----------------
 
 * Use full copies instead of symlinks to create working copies. This avoids
