@@ -1,4 +1,9 @@
-0.6 - Unreleased
+0.7 - Unreleased
+----------------
+
+
+
+0.6 - 2010-03-07
 ----------------
 
 * add a file manifest so that all necessary files will get included for sdist
