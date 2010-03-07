@@ -42,8 +42,5 @@ setup(name='git-svn-helpers',
         # -*- Entry points: -*-
         [console_scripts]
         gitify=gitsvnhelpers.gitify:gitify
-        gs-clone=gitsvnhelpers.deprecated:clone
-        gs-fetch=gitsvnhelpers.deprecated:fetch
-        gs-commit=gitsvnhelpers.deprecated:commit
     """,
     )
