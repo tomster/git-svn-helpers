@@ -7,8 +7,8 @@ from os.path import exists
 import config
 from jarn.mkrelease.tee import popen
 from utils import basename
-from utils import is_git
 from utils import is_svn
+from utils import is_git_link
 from utils import svn_type
 from utils import svn_branch
 from utils import clone
@@ -120,14 +120,15 @@ class Gitify(object):
 
     def __call__(self, **kwargs):
 
-        if len(kwargs) == 0 and sys.argv[-1] !='--version':
-            if is_git():
-                print "This seems to be a local git repository!"
-                return
-        
-            if not is_svn():
-                print "This only works on svn checkouts!"
-                return
+        if len(kwargs) == 0 and sys.argv[-1] !='--version' and not is_svn():
+            print "This only works on svn checkouts!"
+            return
+
+        if is_git_link():
+            print "ERROR: It seems this working directory has been created with an older version of gitify."
+            print "Please remove the `.git` symlink and re-run gitify to update."
+            print "Aborting."
+            return
 
         self.cmd_push = CmdPush(self)
         self.cmd_fetch = CmdFetch(self)

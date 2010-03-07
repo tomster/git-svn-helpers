@@ -20,6 +20,10 @@ def is_git():
     """
     return exists('.git') and not islink('.git')
 
+def is_git_link():
+    """ Does the current directory contain a symlink to .git index?
+    """
+    return islink('.git')
 
 def is_svn():
     """is the current directory a svn checkout?"""
