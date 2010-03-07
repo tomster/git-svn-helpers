@@ -1,0 +1,43 @@
+NOTE: to run this test requires both `svn` and `git` to be on `$PATH`.
+
+Migrating symlinks to full copies
+=================================
+
+As of version 0.7 gitify no longer uses symbolic links to create working copies,
+but instead uses full copies to avoid conflicts when using the same package in
+multiple locations.
+
+If running gitify >= 0.7 on a working copy that has been gitified using a
+version < 0.7 we need to raise an explicit warning:
+
+  >>> import os
+  >>> from gitsvnhelpers.gitify import gitify
+  >>> self.checkout('trunk')
+
+Manually create an old-style symlink to simulate an old-style working copy:
+
+  >>> from gitsvnhelpers.config import GIT_CACHE
+  >>> self.shell('ln -s %s%s/.git' % (GIT_CACHE, self.packagename))
+
+Now we run gitify commands and make sure they are *not* executed and that we're 
+being warned instead:
+
+  >>> gitify(args=['init'])
+  ERROR: It seems this working directory has been created with an older version of gitify.
+  Please remove the `.git` symlink and re-run gitify to update.
+  Aborting.
+
+  >>> gitify(args=['update'])
+  ERROR: It seems this working directory has been created with an older version of gitify.
+  ...
+
+We remove the offending link and try again as per instructions:
+
+  >>> self.shell('rm .git')
+  >>> gitify(args=['init'])
+  No git repository found in...
+  Initiating cloning into cache.
+  Analyzing svn log...
+  Cloning file:///...
+  Initialized empty Git repository in ...
+  ...

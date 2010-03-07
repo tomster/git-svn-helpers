@@ -5,7 +5,6 @@ Basic Argument handling
 
 An unknown command raises a SystemExit:
 
-
   >>> import os
   >>> from gitsvnhelpers.gitify import gitify
   >>> gitify(args=['xxx', '-v'])
@@ -22,11 +21,19 @@ A known command doesn't:
 Initial execution
 =================
 
-Using gitify on a fresh svn checkout which hasn't been cloned before will
+Running gitify on a directory that does not contain a .svn repository raises an error:
+
+  >>> os.chdir(self.tempdir)
+  >>> gitify(args=['init'])
+  Traceback (most recent call last):
+  ... 
+  SystemExit: 1
+
+However, using gitify on a fresh svn checkout which hasn't been cloned before will
 initiate cloning of that repository:
 
   >>> self.checkout('trunk')
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   No git repository found in...
   Initiating cloning into cache.
   Analyzing svn log...
@@ -45,7 +52,10 @@ the cloned repository:
 
   >>> trunk_checkout = self.checkoutdir
   >>> self.checkout('trunk', target="foo")
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
+  Updating existing cache:
+  fetching .../.gitcache/testpackage
+  Done. 1 packages updated.
   Git branch 'local/trunk' is now following svn branch 'trunk':
   # On branch local/trunk
   nothing to commit (working directory clean)
@@ -56,7 +66,7 @@ Switching branches between checkouts
 Gitify refuses to work on tags (because working on tags is evil!):
 
   >>> self.checkout('tags/0.1', target="atag")
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
   Traceback (most recent call last):
   ...
   SystemExit: 1
@@ -64,7 +74,10 @@ Gitify refuses to work on tags (because working on tags is evil!):
 But it will work on branches:
 
   >>> self.checkout('branches/feature-bar', target="bar")
-  >>> gitify(args=['gitify'])
+  >>> gitify(args=['init'])
+  Updating existing cache:
+  fetching .../.gitcache/testpackage
+  Done. 1 packages updated.
   Git branch 'local/feature-bar' is now following svn branch 'feature-bar':
   # On branch local/feature-bar
   nothing to commit (working directory clean)
@@ -74,25 +87,11 @@ Let's remember where we checked out this branch, so we can revisit it later:
   >>> branch_checkout = self.checkoutdir
 
 Having gitified the branch checkout, if we now re-visit the trunk checkout,
-we will find that the git index doesn't match the filesystem anymore:
+we will find that the git index still matches the filesystem, as each is an
+independant copy:
 
   >>> os.chdir(trunk_checkout)
   >>> do('git status')
-  # On branch local/feature-bar
-  # Changed but not updated:
-  #   (use "git add/rm <file>..." to update what will be committed)
-  #   (use "git checkout -- <file>..." to discard changes in working directory)
-  #
-  # modified:   README.txt
-  # deleted:    bar.py
-  # modified:   foo.py
-  #
-  no changes added to commit (use "git add" and/or "git commit -a")
-
-Re-running gitify will take care of this, though:
-
-  >>> gitify(args=['gitify'])
-  Git branch 'local/trunk' is now following svn branch 'trunk':
   # On branch local/trunk
   nothing to commit (working directory clean)
 
@@ -184,56 +183,3 @@ Not only that, but svn's log now also contains our two commits:
   Updated README
   ------------------------------------------------------------------------
 
-Keeping the cache up-to-date
-============================
-
-gitify also helps you keeping the cache it creates up-to-date with changes
-that are committed to the svn repository we're tracking. To test this, we
-first create a new, independent svn checkout:
-
-  >>> self.checkout('trunk', target='svnonly')
-  >>> do('echo "Change from svn" >> svn.txt')
-  >>> do('svn add svn.txt')
-  A         svn.txt
-
-  >>> do('svn commit -m "Added from svn"')
-  Adding         svn.txt
-  Transmitting file data .
-  Committed revision 9.
-
-Having done that, let's return to our gitified checkout of trunk:
-
-  >>> os.chdir(trunk_checkout)
-
-Initially, git knows nothing about the svn commit:
-
-  >>> do('git log -n 1 --abbrev-commit')
-  commit ...
-  Author: ...
-  Date: ...
-  <BLANKLINE>
-      Added TODO
-  ...
-
-Now let's run gitify's ``fetch`` command:
-
-  >>> gitify(args=['fetch'])
-  fetching .../.gitcache/testpackage
-  Done. 1 packages updated.
-
-NOTE: currently gitify does *not* modify the local checkout upon fetching, so
-in order to merge the change into the local checkout we need to explicitly
-invoke the rebase command:
-
-  >>> do('git svn rebase')
-  First, rewinding head to replay your work on top of it...
-
-and voila!, the svn commit appears in the git log:
-
-  >>> do('git log -n 1 --abbrev-commit')
-  commit ...
-  Author: ...
-  Date: ...
-  <BLANKLINE>
-      Added from svn
-  ...

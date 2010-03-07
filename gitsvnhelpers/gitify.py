@@ -7,8 +7,8 @@ from os.path import exists
 import config
 from jarn.mkrelease.tee import popen
 from utils import basename
-from utils import is_git
 from utils import is_svn
+from utils import is_git_link
 from utils import svn_type
 from utils import svn_branch
 from utils import clone
@@ -17,8 +17,7 @@ from commands import CmdPush
 from commands import CmdFetch
 from commands import CmdUpdate
 
-
-class CmdGitify(Command):
+class CmdInit(Command):
 
     def __init__(self, gitify):
         Command.__init__(self, gitify)
@@ -36,6 +35,10 @@ class CmdGitify(Command):
     def __call__(self):
         options, args = self.parser.parse_args(self.gitify.args[2:])
 
+        if not is_svn():
+            print "This only works on svn checkouts!"
+            sys.exit(1)
+
         package_name = basename()
         svntype = svn_type()
 
@@ -50,6 +53,10 @@ class CmdGitify(Command):
             print "No git repository found in %s." % config.GIT_CACHE
             print "Initiating cloning into cache."
             clone()
+        else:
+            # if we already have a cached copy, make sure it's up-to-date:
+            print "Updating existing cache:"
+            gitify(args=['fetch', package_name])
 
         # get the branch svn is on
         remote_branch = svn_branch()
@@ -70,7 +77,7 @@ class CmdGitify(Command):
 
         os.chdir(cwd)
         if not exists('.git'):
-            popen('ln -s %s%s/.git' % (config.GIT_CACHE, package_name), False, False)
+            popen('cp -Rp %s%s/.git .' % (config.GIT_CACHE, package_name), False, False)
 
         print "Git branch '%s' is now following svn branch '%s':" % (
             local_branch, remote_branch)
@@ -117,19 +124,16 @@ class Gitify(object):
 
     def __call__(self, **kwargs):
 
-        if len(kwargs) == 0 and sys.argv[-1] !='--version':
-            if is_git():
-                print "This seems to be a local git repository!"
-                return
-        
-            if not is_svn():
-                print "This only works on svn checkouts!"
-                return
+        if is_git_link():
+            print "ERROR: It seems this working directory has been created with an older version of gitify."
+            print "Please remove the `.git` symlink and re-run gitify to update."
+            print "Aborting."
+            return
 
         self.cmd_push = CmdPush(self)
         self.cmd_fetch = CmdFetch(self)
         self.cmd_update = CmdUpdate(self)
-        self.cmd_gitify = CmdGitify(self)
+        self.cmd_init = CmdInit(self)
         self.cmd_help = CmdHelp(self)
 
         self.commands = dict(
@@ -139,7 +143,7 @@ class Gitify(object):
             h=self.cmd_help,
             fetch = self.cmd_fetch,
             push = self.cmd_push,
-            gitify = self.cmd_gitify,
+            init = self.cmd_init,
         )
 
         # allow sys.argv to be overridden (used for testing)
@@ -148,15 +152,15 @@ class Gitify(object):
         else:
             self.args = sys.argv
 
-        # if no command was given, default to gitify
+        # if no command was given, default to usage
         try:
             command = self.args[1]
         except IndexError:
-            command = 'gitify'
+            command = 'help'
 
-        # pass --version onto gitify
+        # pass --version onto init
         if command == '--version':
-            command = 'gitify'
+            command = 'init'
             self.args.append('--version')
 
         self.commands.get(command, self.unknown)()
