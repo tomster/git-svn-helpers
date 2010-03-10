@@ -12,6 +12,7 @@ from utils import is_git_link
 from utils import svn_type
 from utils import svn_branch
 from utils import clone
+from utils import git_branch
 from commands import Command
 from commands import CmdPush
 from commands import CmdFetch
@@ -78,6 +79,10 @@ class CmdInit(Command):
         os.chdir(cwd)
         if not exists('.git'):
             popen('cp -Rp %s%s/.git .' % (config.GIT_CACHE, package_name), False, False)
+
+        # if the working copy is on another branch, switch:
+        if local_branch != git_branch():
+            popen('git checkout -b %s' % local_branch)
 
         print "Git branch '%s' is now following svn branch '%s':" % (
             local_branch, remote_branch)
