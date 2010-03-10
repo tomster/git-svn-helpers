@@ -57,8 +57,8 @@ Points to note:
  * gitify assumed that the name of the package is the name of the directory it 
    was called from (in this case ``plone.app.form``) as it refuses to guess
 
-Multiple check-outs
-===================
+Multiple check-outs of the same package
+=======================================
 
 In practice you will often work with different local copies of a given repository, i.e. on trunk and on a feature branch. That's when the ``.gitcache`` directory created above comes in handy. Let's move our previous checkout out of the way and create a maintenance checkout that follows trunk::
 
@@ -84,7 +84,9 @@ What happens if we run gitify here?::
     # On branch local/trunk
     nothing to commit (working directory clean)
 
-Notice, that this operation went much faster, as we now have used the existing git repository in the cache directory. This can be further evidenced by looking at the available local branches now::
+Notice, that this operation went much faster, as we now have used the existing git repository in the cache directory, thus avoiding the slow and network intensive clone operation.
+
+This can be further evidenced by looking at the available local branches now. Notice how the git repository contains both trunk and the 1.1 branch::
 
     > git branch
       local/1.1
