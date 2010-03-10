@@ -129,3 +129,13 @@ def local_changes():
         return not output[1].startswith("nothing to commit")
     except IndexError:
         return True
+
+def git_branch():
+    """returns the name of the branch git is currently on"""
+    result, output = popen('git branch', False, False)
+    branch = None
+    for line in output:
+        if line.startswith('*'):
+            branch = line.split('*')[-1].strip()
+            break
+    return branch

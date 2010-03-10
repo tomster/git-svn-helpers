@@ -33,3 +33,6 @@ class TestDoctests(BaseTestCase):
     def test_symlink_migration(self):
         self._test_doctest()
 
+    def test_svn_switch(self):
+        self._test_doctest()
+

@@ -1,7 +1,9 @@
 0.8 - Unreleased
 ----------------
 
-
+* Make the init command follow along if the svn repository has been switched
+  to another branch. Thanks to Calvin Hendryx-Parker for reporting the issue.
+  [tomster]
 
 0.7 - 2010-03-07
 ----------------
