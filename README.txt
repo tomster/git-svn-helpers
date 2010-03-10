@@ -110,7 +110,7 @@ If we switch the svn branch, git initially doesn't catch the change and the bran
 
   > svn switch https://svn.plone.org/svn/plone/plone.app.form/branches/1.1
   > svn info
-  URL: https://svn.plone.org/svn/plone/plone.app.form/trunk
+  URL: https://svn.plone.org/svn/plone/plone.app.form/branches/1.1
 
   > git branch
     local/1.1
