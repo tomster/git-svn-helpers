@@ -1,0 +1,45 @@
+NOTE: to run this test requires both `svn` and `git` to be on `$PATH`.
+
+Switching the svn to another branch
+===================================
+
+The scenario is ...
+
+  >>> import os
+  >>> from gitsvnhelpers.gitify import gitify
+
+  >>> self.checkout('trunk')
+  >>> gitify(args=['init'])
+  No git repository found in...
+  ...
+  Git branch 'local/trunk' is now following svn branch 'trunk':
+  # On branch local/trunk
+  nothing to commit (working directory clean)
+
+Now we switch the svn from trunk to a branch
+
+  >>> self.shell('svn switch file://%s/branches/feature-bar' % self.repo)
+  U    foo.py
+  U    README.txt
+  A    bar.py
+  Updated to revision 6.
+
+Since we did this without 'telling' gitify, the git repo is still on trunk
+
+  >>> self.shell('git branch')
+  * local/trunk
+    master
+
+Re-running `gitify init` remedies the situation, though:
+
+  >>> gitify(args=['init'])
+  Updating existing cache:
+  ...
+
+Now, git is on the branch, as well:
+
+  >>> self.shell('git branch')
+  self.shell('git branch')
+  * local/feature-bar
+    local/trunk
+    master
