@@ -96,7 +96,7 @@ This can be further evidenced by looking at the available local branches now. No
 Switching branches
 ==================
 
-If the svn repository switches to another branch (i.e. due to a change in svn:externals or in a buildout source) the branch git is on differs from the current svn branch. To remedy this you can either manually switch git or just re-run ``gitify init``:
+If the svn repository switches to another branch (i.e. due to a change in svn:externals or in a buildout source) the branch git is on differs from the current svn branch. To remedy this you can either manually switch git or just re-run ``gitify init``::
 
   > svn info
   URL: https://svn.plone.org/svn/plone/plone.app.form/trunk
@@ -106,7 +106,7 @@ If the svn repository switches to another branch (i.e. due to a change in svn:ex
   * local/trunk
     master
 
-If we switch the svn branch, git initially doesn't catch the change and the branches differ:
+If we switch the svn branch, git initially doesn't catch the change and the branches differ::
 
   > svn switch https://svn.plone.org/svn/plone/plone.app.form/branches/1.1
   > svn info
@@ -117,7 +117,7 @@ If we switch the svn branch, git initially doesn't catch the change and the bran
   * local/trunk
     master
 
-After re-running ``gitify init`` they are the same again:
+After re-running ``gitify init`` they are the same again::
 
   > git branch
   * local/1.1
