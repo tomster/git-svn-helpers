@@ -1,4 +1,4 @@
-0.8 - Unreleased
+0.8 - 2010-03-10
 ----------------
 
 * Make the init command follow along if the svn repository has been switched
