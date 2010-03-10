@@ -44,3 +44,27 @@ Now, git is on the branch, as well:
   * local/feature-bar
     local/trunk
     master
+
+Re-switching
+============
+
+It turns out that switching back and forth has issues of its own. Particularly
+switching to a branch that has previously been switched to. To test, we switch
+back to trunk:
+
+  >>> self.shell('svn switch file://%s/trunk' % self.repo)
+  D    bar.py
+  U    foo.py
+  U    README.txt
+  Updated to revision 6.
+
+  >>> gitify(args=['init'])
+  Updating existing cache:
+  ...
+
+Now, git is on the branch, as well:
+
+  >>> self.shell('git branch')
+    local/feature-bar
+  * local/trunk
+    master

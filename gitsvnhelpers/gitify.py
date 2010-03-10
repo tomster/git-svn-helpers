@@ -82,7 +82,10 @@ class CmdInit(Command):
 
         # if the working copy is on another branch, switch:
         if local_branch != git_branch():
-            popen('git checkout -b %s' % local_branch)
+            if local_branch in existing_branches:
+                popen('git checkout %s' % local_branch)
+            else:
+                popen('git checkout -b %s' % local_branch)
 
         print "Git branch '%s' is now following svn branch '%s':" % (
             local_branch, remote_branch)
