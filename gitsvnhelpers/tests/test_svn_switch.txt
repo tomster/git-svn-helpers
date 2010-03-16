@@ -1,5 +1,8 @@
 NOTE: to run this test requires both `svn` and `git` to be on `$PATH`.
 
+NOTE: The test expects that `git` and `svn` globally ignore each other, i.e.
+the `.git` and `.svn` directories.
+
 Switching the svn to another branch
 ===================================
 
