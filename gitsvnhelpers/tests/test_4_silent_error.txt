@@ -1,0 +1,26 @@
+This test reproduces the issue filed at 
+http://github.com/tomster/git-svn-helpers/issues#issue/4
+
+  >>> import os
+  >>> from gitsvnhelpers.gitify import gitify
+  >>> self.checkout('trunk')
+  >>> gitify(args=['init'])
+  No git repository found in...
+  ...
+
+Now we add another file in svn and commit to *svn only*
+
+  >>> self.shell('echo fooooo > foo.txt')
+  >>> self.shell('svn add foo.txt')
+  A         foo.txt
+
+  >>> self.shell('svn commit foo.txt -m "new file"')
+  Adding         foo.txt
+  Transmitting file data .
+  Committed revision 7.
+
+  >>> gitify(args=['update'])
+  Stashing uncommitted local changes.
+  	A	foo.txt
+  r7 = ... (refs/remotes/trunk)
+  First, rewinding head to replay your work on top of it...

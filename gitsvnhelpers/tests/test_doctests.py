@@ -36,3 +36,6 @@ class TestDoctests(BaseTestCase):
     def test_svn_switch(self):
         self._test_doctest()
 
+    def test_4_silent_error(self):
+        self._test_doctest()
+
