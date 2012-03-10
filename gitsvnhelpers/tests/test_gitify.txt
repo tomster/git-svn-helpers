@@ -142,25 +142,26 @@ Let's make another git commit before pushing our changes to svn:
 Now we can push our commits to svn using the ``gitify push`` command:
 
   >>> gitify(args=['push'])
-    Committing to file:///...testpackage/trunk ...
-    	M	README.txt
-    Committed r7
-    	M	README.txt
-    r7 = ... (refs/remotes/trunk)
-    No changes between current HEAD and refs/remotes/trunk
-    Resetting to the latest refs/remotes/trunk
-    Unstaged changes after reset:
-    M	foo.py
-    	M	foo.py
-    Committed r8
-    	M	foo.py
-    r8 = ... (refs/remotes/trunk)
-    No changes between current HEAD and refs/remotes/trunk
-    Resetting to the latest refs/remotes/trunk
-    G    foo.py
-    G    README.txt
-    Updated to revision 8.
-    Pushed local changes to svn.
+  Committing to file:///...testpackage/trunk ...
+  	M	README.txt
+  Committed r7
+  	M	README.txt
+  r7 = ... (refs/remotes/trunk)
+  No changes between current HEAD and refs/remotes/trunk
+  Resetting to the latest refs/remotes/trunk
+  Unstaged changes after reset:
+  M	foo.py
+  	M	foo.py
+  Committed r8
+  	M	foo.py
+  r8 = ... (refs/remotes/trunk)
+  No changes between current HEAD and refs/remotes/trunk
+  Resetting to the latest refs/remotes/trunk
+  Updating '.':
+  G    foo.py
+  G    README.txt
+  Updated to revision 8.
+  Pushed local changes to svn.
 
 Now git and svn are 'in sync' IOW they both agree that there are no uncommitted
 local changes:
