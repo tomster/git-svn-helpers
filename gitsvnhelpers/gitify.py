@@ -69,7 +69,7 @@ class CmdInit(Command):
         os.chdir(config.GIT_CACHE + package_name)
 
         dummy, existing_branches = popen('git branch', False, False)
-        existing_branches = [b.strip() for b in existing_branches]
+        existing_branches = [b.strip('* ') for b in existing_branches]
         if local_branch in existing_branches:
             popen('git checkout -f %s' % local_branch, False, False)
         else:
@@ -83,10 +83,13 @@ class CmdInit(Command):
         # if the working copy is on another branch, switch:
         if local_branch != git_branch():
             if local_branch in existing_branches:
-                popen('git checkout %s' % local_branch)
+                popen('git checkout -f %s' % local_branch)
             else:
                 popen('git checkout -b %s' % local_branch)
 
+        assert git_branch() == local_branch, (
+            "Changing branches failed, is on %r but should be on %r"
+            % (git_branch(), local_branch))
         print "Git branch '%s' is now following svn branch '%s':" % (
             local_branch, remote_branch)
         popen('svn status')
