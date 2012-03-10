@@ -5,6 +5,7 @@ import StringIO
 from os.path import join, dirname
 from jarn.mkrelease.testing import SubversionSetup, JailSetup, GitSetup
 from jarn.mkrelease.process import Process
+from jarn.mkrelease.tee import popen
 from gitsvnhelpers import config
 
 
@@ -90,6 +91,7 @@ class GitTestCase(GitSetup):
             self.packagedir = join(self.tempdir, 'testpackage')
             shutil.copytree(package, self.packagedir)
             os.chdir(self.packagedir)
+            popen('git init')
         except:
             self.cleanUp()
             raise
