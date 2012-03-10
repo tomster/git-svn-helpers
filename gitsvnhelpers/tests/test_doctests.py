@@ -36,5 +36,5 @@ def test_suite():
         'test_gitify_fetch.txt',
         'test_symlink_migration.txt',
         'test_svn_switch.txt',
-        setUp=setUp,
+        setUp=setUp, tearDown=tearDown,
         optionflags=optionflags)
