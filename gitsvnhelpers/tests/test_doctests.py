@@ -12,17 +12,16 @@ class TestDoctests(BaseTestCase):
     def runTest(self):
         raise NotImplemented
 
-
-def shell(cmd):
-    """executes the shell command and prints its output"""
-    code, output = popen(cmd, False, False)
-    for line in output:
-        print line
+    def shell(self, cmd):
+        """executes the shell command and prints its output"""
+        code, output = popen(cmd, False, False)
+        for line in output:
+            print line
 
 
 def setUp(test):
     self = TestDoctests()
-    test.globs['self'] = self
+    test.globs.update(self=self, do=self.shell)
     self.setUp()
 
 
@@ -37,6 +36,5 @@ def test_suite():
         'test_gitify_fetch.txt',
         'test_symlink_migration.txt',
         'test_svn_switch.txt',
-        globs=dict(do=shell),
         setUp=setUp,
         optionflags=optionflags)
