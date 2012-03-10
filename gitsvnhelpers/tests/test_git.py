@@ -27,7 +27,7 @@ class TestGit(GitTestCase):
         popen('git add bar.txt')
         self.failUnless(index_is_dirty())
         # Once we've actually committed the change, we're clean again:
-        popen('git ci -m "added bar"', False, False)
+        popen('git commit -m "added bar"', False, False)
         self.failIf(index_is_dirty())
 
     def test_local_changes(self):
@@ -42,11 +42,11 @@ class TestGit(GitTestCase):
         # Once we've actually committed the change, we're clean again:
         popen('git add bar.txt')
         self.failUnless(local_changes())
-        popen('git ci -m "added bar"', False, False)
+        popen('git commit -m "added bar"', False, False)
         self.failIf(local_changes())
         # Modifying an existing file will have the same effect:
         popen('echo "modified" >> bar.txt')
         self.failUnless(local_changes())
         popen('git add bar.txt')
-        popen('git ci -m "modified bar"', False, False)
+        popen('git commit -m "modified bar"', False, False)
         self.failIf(local_changes())

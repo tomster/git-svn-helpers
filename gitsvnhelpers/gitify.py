@@ -68,7 +68,7 @@ class CmdInit(Command):
         # perform all index updates in the cache to avoid conflicts
         os.chdir(config.GIT_CACHE + package_name)
 
-        dummy, existing_branches = popen('git b', False, False)
+        dummy, existing_branches = popen('git branch', False, False)
         existing_branches = [b.strip() for b in existing_branches]
         if local_branch in existing_branches:
             popen('git checkout -f %s' % local_branch, False, False)
