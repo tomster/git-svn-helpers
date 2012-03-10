@@ -126,7 +126,7 @@ def local_changes():
     """
     result, output = popen('git status', False, False)
     try:
-        return not output[1].startswith("nothing to commit")
+        return not output[-1].startswith("nothing to commit")
     except IndexError:
         return True
 
