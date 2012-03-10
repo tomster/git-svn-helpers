@@ -9,30 +9,34 @@ optionflags = (doctest.REPORT_ONLY_FIRST_FAILURE |
 
 class TestDoctests(BaseTestCase):
 
-    def shell(self, cmd):
-        """executes the shell command and prints its output"""
-        code, output = popen(cmd, False, False)
-        for line in output:
-            print line
+    def runTest(self):
+        raise NotImplemented
 
-    def _test_doctest(self):
-        doctest.testfile("%s.txt" % self._testMethodName,
-            globs=dict(self=self, do=self.shell),
-            report=True,
-            optionflags=optionflags)
 
-    def test_gitify(self):
-        self._test_doctest()
+def shell(cmd):
+    """executes the shell command and prints its output"""
+    code, output = popen(cmd, False, False)
+    for line in output:
+        print line
 
-    def test_gitify_up(self):
-        self._test_doctest()
 
-    def test_gitify_fetch(self):
-        self._test_doctest()
+def setUp(test):
+    self = TestDoctests()
+    test.globs['self'] = self
+    self.setUp()
 
-    def test_symlink_migration(self):
-        self._test_doctest()
 
-    def test_svn_switch(self):
-        self._test_doctest()
+def tearDown(test):
+    test.globs['self'].tearDown()
 
+
+def test_suite():
+    return doctest.DocFileSuite(
+        'test_gitify.txt',
+        'test_gitify_up.txt',
+        'test_gitify_fetch.txt',
+        'test_symlink_migration.txt',
+        'test_svn_switch.txt',
+        globs=dict(do=shell),
+        setUp=setUp,
+        optionflags=optionflags)
