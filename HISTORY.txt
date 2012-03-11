@@ -1,6 +1,10 @@
 0.9 - Unreleased
 ----------------
 
+* Fix the handling when switching to a svn branch that git already has
+  a local branch for.
+  [rossp]
+
 0.8 - 2010-03-10
 ----------------
 

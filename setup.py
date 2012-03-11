@@ -7,7 +7,7 @@ setup(name='git-svn-helpers',
     version=version,
     description="Command-line tools to make git-svn simple",
     long_description = (
-        open('README.txt').read()
+        open('README.rst').read()
         + '\n' +
         'Change history\n'
         '**************\n'

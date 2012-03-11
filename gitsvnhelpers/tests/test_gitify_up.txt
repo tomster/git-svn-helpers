@@ -68,7 +68,7 @@ Starting easy, we simply add a new file to the svn repo:
   >>> do('svn commit -m "Added from svn"')
   Adding         svn.txt
   Transmitting file data .
-  Committed revision 7.
+  Committed revision ...
 
 Then we re-visit our gitified checkout:
 
@@ -166,6 +166,7 @@ Subversion
 
   >>> os.chdir(svnlocal)
   >>> do("svn up")
+  Updating '.':
   G    svn.txt
   Updated to revision 8.
 
@@ -195,7 +196,6 @@ The rebase command works as expected:
   	M	svn.txt
   r8 = ... (refs/remotes/trunk)
   First, rewinding head to replay your work on top of it...
-  Nothing to do.
 
 Now the slate is clean:
 
@@ -212,7 +212,7 @@ let's first check the status:
   >>> os.chdir(gitified)
   >>> do('git status')
   # On branch local/trunk
-  # Changed but not updated:
+  # Change...:
   #   (use "git add <file>..." to update what will be committed)
   #   (use "git checkout -- <file>..." to discard changes in working directory)
   #
@@ -231,7 +231,7 @@ except that git now calls them 'unmerged' instead of 'modified':
   # On branch local/trunk
   # Unmerged paths:
   #   (use "git reset HEAD <file>..." to unstage)
-  #   (use "git add <file>..." to mark resolution)
+  #   (use "git add... to mark resolution)
   #
   #	both modified:      svn.txt
   #
